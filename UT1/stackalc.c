@@ -31,13 +31,22 @@ void eval(char *code[], int *pos, double stack[], int *top) {
 	} else if (strcmp("DIV", instr) == 0) {
 		stack[(*top) - 1] = stack[(*top) - 1] / stack[*top];
 		(*top)--;
-	} else {
-    char numeral[strlen(instr)];
-	  strcpy(numeral, instr);
-    float value;
-		sscanf(numeral, "%f", &value);
-    (*top)++;
-    stack[*top] = value;
+  } else if (strcmp("EQ", instr) == 0){
+    stack[(*top) - 1] = stack[(*top) - 1] == stack[*top];
+		(*top)--;
+  }else if (strcmp("DIFF", instr) == 0){
+    stack[(*top) - 1] = stack[(*top) - 1] != stack[*top];
+		(*top)--;
+  }else if (strcmp("LT", instr) == 0){
+    stack[(*top) - 1] = stack[(*top) - 1] < stack[*top];
+		(*top)--;
+  } else {
+      char numeral[strlen(instr)];
+      strcpy(numeral, instr);
+      float value;
+      sscanf(numeral, "%f", &value);
+      (*top)++;
+      stack[*top] = value;
 	}
 }
 
