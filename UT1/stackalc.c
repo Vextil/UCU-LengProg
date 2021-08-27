@@ -31,6 +31,14 @@ void eval(char *code[], int *pos, double stack[], int *top) {
 	} else if (strcmp("DIV", instr) == 0) {
 		stack[(*top) - 1] = stack[(*top) - 1] / stack[*top];
 		(*top)--;
+	} else if (strcmp("NOT", instr) == 0) {
+		stack[(*top)] = stack[*top] ? 0 : 1;
+	} else if (strcmp("AND", instr) == 0) {
+    stack[(*top) - 1] = stack[(*top) - 1] && stack[*top] ? 1 : 0;
+		(*top)--;
+	} else if (strcmp("OR", instr) == 0) {
+    stack[(*top) - 1] = stack[(*top) - 1] || stack[*top] ? 1 : 0;
+		(*top)--;
 	} else {
     char numeral[strlen(instr)];
 	  strcpy(numeral, instr);
