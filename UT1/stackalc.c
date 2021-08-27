@@ -23,7 +23,7 @@ void eval(char *code[], int *pos, double stack[], int *top) {
 		stack[(*top) - 1] = stack[(*top) - 1] + stack[*top];
 		(*top)--;
 	} else if (strcmp("SUB", instr) == 0) {
-		stack[(*top) - 1] = stack[(*top) - 1] + stack[*top];
+		stack[(*top) - 1] = stack[(*top) - 1] - stack[*top];
 		(*top)--;
 	} else if (strcmp("MULT", instr) == 0) {
 		stack[(*top) - 1] = stack[(*top) - 1] * stack[*top];
