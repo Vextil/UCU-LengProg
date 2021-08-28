@@ -44,8 +44,10 @@ void eval(char *code[], int *pos, double stack[], int *top) {
 	  strcpy(numeral, instr);
     float value;
 		sscanf(numeral, "%f", &value);
-    (*top)++;
-    stack[*top] = value;
+    if (*top < MAX_STACK) {
+      (*top)++;
+      stack[*top] = value;
+    }
 	}
 }
 
@@ -57,7 +59,6 @@ void printStack(double stack[], int top) {
 }
 
 void evalCode(char *code[], int codeLength, double stack[], int *top) {
-  int pos = 0;
   for (int pos = 0; pos < codeLength; pos++) {
     eval(code, &pos, stack, top);
   }
