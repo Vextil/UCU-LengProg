@@ -1,6 +1,7 @@
 // Compile with `gcc stackalc01.c -o stackalc01.exe`
 #include <stdio.h>
 #include <string.h>
+#include <stdlib.h>
 #define MAX_INPUT 1024
 #define MAX_CODE 30
 #define MAX_STACK 100
@@ -63,6 +64,18 @@ void eval(char *code[], int *pos, double stack[], int *top, double var[]) {
     stack[(*top)] = stack[(*top) - 1];
   } else if (strcmp("POP", instr) == 0) {
     (*top)--;
+  } else if (strncmp("GET:", instr, 4) == 0) {
+    int num = instr[4] - '0';
+    if (num < MAX_VAR) {
+      (*top)++;
+      stack[(*top)] = var[num];
+    }
+  } else if (strncmp("SET:", instr, 4) == 0) {
+    int num = instr[4] - '0';
+    if (num < MAX_VAR) {
+      var[num] = stack[(*top)];
+      (*top)--;
+    }
   } else {
     char numeral[strlen(instr)];
 	  strcpy(numeral, instr);
@@ -75,9 +88,13 @@ void eval(char *code[], int *pos, double stack[], int *top, double var[]) {
 	}
 }
 
-void printStack(double stack[], int top) {
+void printStack(double stack[], int top, double var[]) {
     for (int i = 0; i <= top; i++) {
-        printf("%f ", stack[i]);
+        printf("%.1f ", stack[i]);
+    }
+    printf("| ");
+    for (int i = 0; i < MAX_VAR; i++) {
+        printf("[%i = %.1f] ", i, var[i]);
     }
     printf("\n");
 }
@@ -86,7 +103,7 @@ void evalCode(char *code[], int codeLength, double stack[], int *top, double var
   for (int pos = 0; pos < codeLength; pos++) {
     eval(code, &pos, stack, top, var);
   }
-  printStack(stack, *top);
+  printStack(stack, *top, var);
 }
 
 int parseLine(char buffer[], char *code[]) {
