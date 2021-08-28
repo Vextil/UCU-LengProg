@@ -4,6 +4,7 @@
 #define MAX_INPUT 1024
 #define MAX_CODE 30
 #define MAX_STACK 100
+#define MAX_VAR 5
 
 // May be required or imported.
 char *strsep(char **stringp, const char *delim) {
@@ -17,7 +18,7 @@ char *strsep(char **stringp, const char *delim) {
     return rv;
 }
 
-void eval(char *code[], int *pos, double stack[], int *top) {
+void eval(char *code[], int *pos, double stack[], int *top, double var[]) {
   char *instr = code[*pos];
 	if (strcmp("ADD", instr) == 0) {
 		stack[(*top) - 1] = stack[(*top) - 1] + stack[*top];
@@ -43,10 +44,10 @@ void eval(char *code[], int *pos, double stack[], int *top) {
   } else if (strcmp("EQ", instr) == 0){
     stack[(*top) - 1] = stack[(*top) - 1] == stack[*top];
 		(*top)--;
-  }else if (strcmp("DIFF", instr) == 0){
+  } else if (strcmp("DIFF", instr) == 0){
     stack[(*top) - 1] = stack[(*top) - 1] != stack[*top];
 		(*top)--;
-  }else if (strcmp("LT", instr) == 0){
+  } else if (strcmp("LT", instr) == 0){
     stack[(*top) - 1] = stack[(*top) - 1] < stack[*top];
 		(*top)--;
 	} else if (strcmp("NOT", instr) == 0) {
@@ -57,7 +58,12 @@ void eval(char *code[], int *pos, double stack[], int *top) {
 	} else if (strcmp("OR", instr) == 0) {
     stack[(*top) - 1] = stack[(*top) - 1] || stack[*top] ? 1 : 0;
 		(*top)--;
-	} else {
+	} else if (strcmp("DUP", instr) == 0) {
+    (*top)++;
+    stack[(*top)] = stack[(*top) - 1];
+  } else if (strcmp("POP", instr) == 0) {
+    (*top)--;
+  } else {
     char numeral[strlen(instr)];
 	  strcpy(numeral, instr);
     float value;
@@ -76,9 +82,9 @@ void printStack(double stack[], int top) {
     printf("\n");
 }
 
-void evalCode(char *code[], int codeLength, double stack[], int *top) {
+void evalCode(char *code[], int codeLength, double stack[], int *top, double var[]) {
   for (int pos = 0; pos < codeLength; pos++) {
-    eval(code, &pos, stack, top);
+    eval(code, &pos, stack, top, var);
   }
   printStack(stack, *top);
 }
@@ -100,6 +106,7 @@ int main() {
   char *code[MAX_CODE];
   int codeLength = 0;
   double stack[MAX_STACK];
+  double var[MAX_VAR];
   int top = (-1);
 	while (1) {
     if (fgets(buffer, MAX_INPUT, stdin) == NULL || strcmp(buffer, "\n") == 0) {
@@ -107,7 +114,7 @@ int main() {
     }
     buffer[strcspn(buffer, "\n")] = 0; // Remove end-of-line
     codeLength = parseLine(buffer, code);
-    evalCode(code, codeLength, stack, &top);
+    evalCode(code, codeLength, stack, &top, var);
 	}
   return 0; // Fin
 }
