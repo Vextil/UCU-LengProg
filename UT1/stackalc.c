@@ -31,7 +31,16 @@ void eval(char *code[], int *pos, double stack[], int *top) {
 	} else if (strcmp("DIV", instr) == 0) {
 		stack[(*top) - 1] = stack[(*top) - 1] / stack[*top];
 		(*top)--;
-	} else {
+	} else if (strcmp("LTE", instr) == 0) {
+		stack[(*top) - 1] = stack[(*top) - 1] <= stack[(*top)] ? 1 : 0 ;
+		(*top)--;
+	} else if (strcmp("GT", instr) == 0) {
+	  stack[(*top) - 1] = stack[(*top) - 1] > stack[(*top)] ? 1 : 0 ;
+		(*top)--;
+	} else if (strcmp("GTE", instr) == 0) {
+		stack[(*top) - 1] = stack[(*top) - 1] >= stack[(*top)] ? 1 : 0 ;
+		(*top)--;
+	} else{
     char numeral[strlen(instr)];
 	  strcpy(numeral, instr);
     float value;
