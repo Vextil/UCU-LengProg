@@ -40,13 +40,32 @@ void eval(char *code[], int *pos, double stack[], int *top) {
 	} else if (strcmp("GTE", instr) == 0) {
 		stack[(*top) - 1] = stack[(*top) - 1] >= stack[(*top)] ? 1 : 0 ;
 		(*top)--;
-	} else{
+  } else if (strcmp("EQ", instr) == 0){
+    stack[(*top) - 1] = stack[(*top) - 1] == stack[*top];
+		(*top)--;
+  }else if (strcmp("DIFF", instr) == 0){
+    stack[(*top) - 1] = stack[(*top) - 1] != stack[*top];
+		(*top)--;
+  }else if (strcmp("LT", instr) == 0){
+    stack[(*top) - 1] = stack[(*top) - 1] < stack[*top];
+		(*top)--;
+	} else if (strcmp("NOT", instr) == 0) {
+		stack[(*top)] = stack[*top] ? 0 : 1;
+	} else if (strcmp("AND", instr) == 0) {
+    stack[(*top) - 1] = stack[(*top) - 1] && stack[*top] ? 1 : 0;
+		(*top)--;
+	} else if (strcmp("OR", instr) == 0) {
+    stack[(*top) - 1] = stack[(*top) - 1] || stack[*top] ? 1 : 0;
+		(*top)--;
+	} else {
     char numeral[strlen(instr)];
 	  strcpy(numeral, instr);
     float value;
 		sscanf(numeral, "%f", &value);
-    (*top)++;
-    stack[*top] = value;
+    if (*top < MAX_STACK) {
+      (*top)++;
+      stack[*top] = value;
+    }
 	}
 }
 
@@ -58,7 +77,6 @@ void printStack(double stack[], int top) {
 }
 
 void evalCode(char *code[], int codeLength, double stack[], int *top) {
-  int pos = 0;
   for (int pos = 0; pos < codeLength; pos++) {
     eval(code, &pos, stack, top);
   }
