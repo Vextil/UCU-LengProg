@@ -127,7 +127,7 @@ void printStack(double stack[], int top, double var[]) {
 }
 
 void evalCode(char *code[], int codeLength, double stack[], int *top, double var[]) {
-  for (int pos = 0; pos < codeLength; ) {
+  for (int pos = 0; pos < codeLength && pos >= 0; ) {
     eval(code, &pos, stack, top, var);
   }
   printStack(stack, *top, var);
