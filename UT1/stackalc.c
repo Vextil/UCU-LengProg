@@ -28,22 +28,30 @@ void eval(char *code[], int *pos, double stack[], int *top, double var[]) {
     int num = instr[4] - '0';
     *pos -= num;
   } else if (strncmp("CJP+", instr, 4) == 0) {
-    double value = stack[(*top)];
-    (*top)--;
-    if (value) {
-      int num = instr[4] - '0';
-      *pos += num;
-    } else {
+    if (*top <= 0) {
       *pos += 1;
+    } else {
+      double value = stack[(*top)];
+      (*top)--;
+      if (value) {
+        int num = instr[4] - '0';
+        *pos += num;
+      } else {
+        *pos += 1;
+      }
     }
   } else if (strncmp("CJP-", instr, 4) == 0) {
-    double value = stack[(*top)];
-    (*top)--;
-    if (value) {
-      int num = instr[4] - '0';
-      *pos -= num;
+    if (*top <= 0) {
+        *pos += 1;
     } else {
-      *pos += 1;
+      double value = stack[(*top)];
+      (*top)--;
+      if (value) {
+        int num = instr[4] - '0';
+        *pos -= num;
+      } else {
+        *pos += 1;
+      }
     }
   } else {
     if (strcmp("ADD", instr) == 0) {
