@@ -1,5 +1,6 @@
 // Compile with `gcc stackalc01.c -o stackalc01.exe`
 #include <stdio.h>
+#include <math.h>
 #include <string.h>
 #include <stdlib.h>
 #define MAX_INPUT 1024
@@ -28,22 +29,30 @@ void eval(char *code[], int *pos, double stack[], int *top, double var[]) {
     int num = instr[4] - '0';
     *pos -= num;
   } else if (strncmp("CJP+", instr, 4) == 0) {
-    double value = stack[(*top)];
-    (*top)--;
-    if (value) {
-      int num = instr[4] - '0';
-      *pos += num;
-    } else {
+    if (*top <= 0) {
       *pos += 1;
+    } else {
+      double value = stack[(*top)];
+      (*top)--;
+      if (value) {
+        int num = instr[4] - '0';
+        *pos += num;
+      } else {
+        *pos += 1;
+      }
     }
   } else if (strncmp("CJP-", instr, 4) == 0) {
-    double value = stack[(*top)];
-    (*top)--;
-    if (value) {
-      int num = instr[4] - '0';
-      *pos -= num;
+    if (*top <= 0) {
+        *pos += 1;
     } else {
-      *pos += 1;
+      double value = stack[(*top)];
+      (*top)--;
+      if (value) {
+        int num = instr[4] - '0';
+        *pos -= num;
+      } else {
+        *pos += 1;
+      }
     }
   } else {
     if (strcmp("ADD", instr) == 0) {
@@ -150,7 +159,7 @@ int main() {
   char *code[MAX_CODE];
   int codeLength = 0;
   double stack[MAX_STACK];
-  double var[MAX_VAR];
+  double var[MAX_VAR] =  { [0 ... (MAX_VAR - 1)] = NAN };
   int top = (-1);
 	while (1) {
     if (fgets(buffer, MAX_INPUT, stdin) == NULL || strcmp(buffer, "\n") == 0) {

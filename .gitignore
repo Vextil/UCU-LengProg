@@ -3,6 +3,7 @@
 *.dSYM
 build/
 nbproject/private/
+.idea/
 
 # General
 .DS_Store
