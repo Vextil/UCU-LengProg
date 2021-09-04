@@ -1,7 +1,7 @@
 defmodule UT2 do
 
   def randomStr(n, chars) when n == 0 and chars == '' do
-    "NADA"
+    ""
   end
 
   def randomStr(n, chars) when n > 0 and chars == '' do
