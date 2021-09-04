@@ -1,5 +1,6 @@
 // Compile with `gcc stackalc01.c -o stackalc01.exe`
 #include <stdio.h>
+#include <math.h>
 #include <string.h>
 #include <stdlib.h>
 #define MAX_INPUT 1024
@@ -158,7 +159,7 @@ int main() {
   char *code[MAX_CODE];
   int codeLength = 0;
   double stack[MAX_STACK];
-  double var[MAX_VAR];
+  double var[MAX_VAR] =  { [0 ... (MAX_VAR - 1)] = NAN };
   int top = (-1);
 	while (1) {
     if (fgets(buffer, MAX_INPUT, stdin) == NULL || strcmp(buffer, "\n") == 0) {
