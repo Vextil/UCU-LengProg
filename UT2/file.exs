@@ -30,9 +30,7 @@ defmodule JSON do
       {:number, val} -> inspect(val)
       {:string, val} -> inspect(val)
       {:array, val} -> "[" <> Enum.join(Enum.map(val, fn x -> JSON.stringify(x) end), ", ") <> "]"
-      {:object, val} -> "{" <> Enum.join(Enum.map(val, fn x -> JSON.stringify(x) end), ", ") <> "}"
-      {var, val} -> var <> ": " <> JSON.stringify(val)
-      _ -> "otro"
+      {:object, val} -> "{" <> Enum.join(Enum.map(val, fn {x, y} -> x <> ": " <> JSON.stringify(y) end), ", ") <> "}"
     end
   end
 
@@ -46,7 +44,7 @@ IO.puts(JSON.stringify({:bool, false}))
 IO.puts(JSON.stringify({:number, -12.34}))
 IO.puts(JSON.stringify({:string, "This string."}))
 IO.puts(JSON.stringify({:array, [{:null}, {:bool, false}]})) # [null, false]
-IO.puts(JSON.stringify(nums))
+IO.puts(JSON.stringify({:array, nums}))
 IO.puts(JSON.stringify({:object, fields}))
 IO.puts(JSON.stringify({:object, [
                         {"x", {:number, 1}},
