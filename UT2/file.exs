@@ -29,7 +29,7 @@ defmodule JSON do
       {:bool, val} -> inspect(val)
       {:number, val} -> inspect(val)
       {:string, val} -> inspect(val)
-      {:array, val} -> Enum.join(Enum.map(val, fn x -> JSON.stringify(x) end), ",")
+      {:array, val} -> "[" <> Enum.join(Enum.map(val, fn x -> JSON.stringify(x) end), ",") <> "]"
       _ -> "otro"
     end
   end
