@@ -44,25 +44,50 @@ defmodule JSON do
     end
   end
 
-  # def randomGeneratorHeightN(randomN,) do
+  # def randomGeneratorHeightN(altura,ancho) do
   #   n = Enum.random([0,1])
-  #   case randomN do
-  #     randomN == 0 -> {:null}
-  #     randomN == 1 -> {:bool, Enum.random([true, false])} #BOOL
+  #   case n do
+  #     0 -> {:array, 1..ancho |> Enum.map(fn _ -> random(altura-1,ancho) end)}
+  #     1 -> {:object, 1..ancho |> Enum.map(fn _ -> randomGeneratorHeightOne(Enum.random(0..3),0) end)}
   #   end
   # end
 
 
   def random(altura,ancho) do
-    #TIPOS = [:null, :bool, :number, :string, :array, :object]
       case altura do
         0 -> randomGeneratorHeightOne(0,0)
         1 -> randomGeneratorHeightOne(Enum.random(0..4),ancho)
-        #x ->
+        #x -> randomGeneratorHeightN(altura,ancho)
+      end
+  end
+
+
+end
+
+defmodule CalcProp do
+  def eval(prop, asignacion) do
+    asig = %{"p" => true, "q" => false}
+
+    case prop do
+      {:const, val} -> val
+      {:var, val} -> asig[val]
+      {:neg, val} -> !eval(val, asignacion)
+      {:and, a, b} -> eval(a, asignacion) and eval(b, asignacion)
+      {:or, a, b} -> eval(a, asignacion) or eval(b, asignacion)
+      {:cond, a, b} -> if eval(a, asignacion) && !eval(b, asignacion), do: false, else: true
+      {:iff, a, b} -> eval(a, asignacion) == eval(b, asignacion)
       end
   end
 
 end
+
+asig = %{"p" => true, "q" => false}
+IO.puts(CalcProp.eval({:const, true}, asig))
+IO.puts(CalcProp.eval({:var, "q"}, asig))
+IO.puts(CalcProp.eval({:neg, {:var, "q"}}, asig))
+IO.puts(CalcProp.eval({:and, {:var, "q"}, {:const, true}}, asig))
+IO.puts(CalcProp.eval({:or, {:var, "p"}, {:const, false}}, asig))
+IO.puts(CalcProp.eval({:iff, {:var, "p"}, {:const, true}}, asig))
 
 # nums = Enum.map([1,2,3], &({:number, &1}))
 # fields = Enum.zip(["x", "y"], [bool: true, bool: false])
@@ -84,10 +109,11 @@ end
 #                       ]}))
 
 
-(IO.inspect(JSON.random(0,0)))
-(IO.inspect(JSON.random(1,3)))
-(IO.inspect(JSON.random(1,3)))
-(IO.inspect(JSON.random(1,3)))
+
+# (IO.inspect(JSON.random(0,0)))
+# (IO.inspect(JSON.random(1,3)))
+# (IO.inspect(JSON.random(1,3)))
+# (IO.inspect(JSON.random(1,3)))
 # {:null}
 # {:number, 95}
 # {:number, 62}
