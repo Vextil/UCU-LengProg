@@ -92,6 +92,10 @@ end
 # {:number, 95}
 # {:number, 62}
 # {:array, [{:bool, true}, {:string, <<111, 106, 241, 118, 98, 122>>}, {:null}]}
+# {:null}
+# {:number, 27}
+# {:number, 50}
+# {:array, [number: 40, number: 96, string: "kdprkglx"]}
 
 # IO.puts(JSON.stringify(JSON.random(2,1)))
 # IO.puts(JSON.stringify(JSON.random(2,1)))
