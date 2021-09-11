@@ -34,23 +34,94 @@ defmodule JSON do
     end
   end
 
+  def randomGeneratorHeightOne(randomN,width) do
+    case randomN do
+      0 -> {:null}
+      1 -> {:bool, Enum.random([true, false])} #BOOL
+      2 -> {:number, Enum.random(1..100)} # NUMBER
+      3 -> {:string, UT2.randomStr(Enum.random(1..9), 'abcdefghijklmnñopqrstuvwxyz')} # STRING
+      4 -> {:array, 1..width |> Enum.map(fn _ -> randomGeneratorHeightOne(Enum.random(0..3),0) end)}
+    end
+  end
+
+  # def randomGeneratorHeightN(altura,ancho) do
+  #   n = Enum.random([0,1])
+  #   case n do
+  #     0 -> {:array, 1..ancho |> Enum.map(fn _ -> random(altura-1,ancho) end)}
+  #     1 -> {:object, 1..ancho |> Enum.map(fn _ -> randomGeneratorHeightOne(Enum.random(0..3),0) end)}
+  #   end
+  # end
+
+
+  def random(altura,ancho) do
+      case altura do
+        0 -> randomGeneratorHeightOne(0,0)
+        1 -> randomGeneratorHeightOne(Enum.random(0..4),ancho)
+        #x -> randomGeneratorHeightN(altura,ancho)
+      end
+  end
+
+
 end
 
-nums = Enum.map([1,2,3], &({:number, &1}))
-fields = Enum.zip(["x", "y"], [bool: true, bool: false])
+defmodule CalcProp do
+  def eval(prop, asignacion) do
+    asig = %{"p" => true, "q" => false}
 
-IO.puts(JSON.stringify({:null}))
-IO.puts(JSON.stringify({:bool, false}))
-IO.puts(JSON.stringify({:number, -12.34}))
-IO.puts(JSON.stringify({:string, "This string."}))
-IO.puts(JSON.stringify({:array, [{:null}, {:bool, false}]})) # [null, false]
-IO.puts(JSON.stringify({:array, nums}))
-IO.puts(JSON.stringify({:object, fields}))
-IO.puts(JSON.stringify({:object, [
-                        {"x", {:number, 1}},
-                        {"y", {:array, []}},
-                        {"z", {:object, [
-                          {"x", {:number, 1}},
-                          {"y", {:array, [{:null}, {:bool, false}]}}
-                        ]}}
-                      ]}))
+    case prop do
+      {:const, val} -> val
+      {:var, val} -> asig[val]
+      {:neg, val} -> !eval(val, asignacion)
+      {:and, a, b} -> eval(a, asignacion) and eval(b, asignacion)
+      {:or, a, b} -> eval(a, asignacion) or eval(b, asignacion)
+      {:cond, a, b} -> if eval(a, asignacion) && !eval(b, asignacion), do: false, else: true
+      {:iff, a, b} -> eval(a, asignacion) == eval(b, asignacion)
+      end
+  end
+
+end
+
+asig = %{"p" => true, "q" => false}
+IO.puts(CalcProp.eval({:const, true}, asig))
+IO.puts(CalcProp.eval({:var, "q"}, asig))
+IO.puts(CalcProp.eval({:neg, {:var, "q"}}, asig))
+IO.puts(CalcProp.eval({:and, {:var, "q"}, {:const, true}}, asig))
+IO.puts(CalcProp.eval({:or, {:var, "p"}, {:const, false}}, asig))
+IO.puts(CalcProp.eval({:iff, {:var, "p"}, {:const, true}}, asig))
+
+# nums = Enum.map([1,2,3], &({:number, &1}))
+# fields = Enum.zip(["x", "y"], [bool: true, bool: false])
+
+# IO.puts(JSON.stringify({:null}))
+# IO.puts(JSON.stringify({:bool, false}))
+# IO.puts(JSON.stringify({:number, -12.34}))
+# IO.puts(JSON.stringify({:string, "This string."}))
+# IO.puts(JSON.stringify({:array, [{:null}, {:bool, false}]})) # [null, false]
+# IO.puts(JSON.stringify({:array, nums}))
+# IO.puts(JSON.stringify({:object, fields}))
+# IO.puts(JSON.stringify({:object, [
+#                         {"x", {:number, 1}},
+#                         {"y", {:array, []}},
+#                         {"z", {:object, [
+#                           {"x", {:number, 1}},
+#                           {"y", {:array, [{:null}, {:bool, false}]}}
+#                         ]}}
+#                       ]}))
+
+
+
+# (IO.inspect(JSON.random(0,0)))
+# (IO.inspect(JSON.random(1,3)))
+# (IO.inspect(JSON.random(1,3)))
+# (IO.inspect(JSON.random(1,3)))
+# {:null}
+# {:number, 95}
+# {:number, 62}
+# {:array, [{:bool, true}, {:string, <<111, 106, 241, 118, 98, 122>>}, {:null}]}
+# {:null}
+# {:number, 27}
+# {:number, 50}
+# {:array, [number: 40, number: 96, string: "kdprkglx"]}
+
+# IO.puts(JSON.stringify(JSON.random(2,1)))
+# IO.puts(JSON.stringify(JSON.random(2,1)))
