@@ -44,20 +44,20 @@ defmodule JSON do
     end
   end
 
-  # def randomGeneratorHeightN(altura,ancho) do
-  #   n = Enum.random([0,1])
-  #   case n do
-  #     0 -> {:array, 1..ancho |> Enum.map(fn _ -> random(altura-1,ancho) end)}
-  #     1 -> {:object, 1..ancho |> Enum.map(fn _ -> randomGeneratorHeightOne(Enum.random(0..3),0) end)}
-  #   end
-  # end
+  def randomGeneratorHeightN(altura,ancho) do
+    n = Enum.random([0,1])
+    case n do
+      0 -> {:array, 1..ancho |> Enum.map(fn _ -> random(altura-1,ancho) end)}
+      1 -> {:object, 1..ancho |> Enum.map(fn _ -> {UT2.randomStr(Enum.random(1..9), 'abcdefghijklmnñopqrstuvwxyz'), random(altura-1, ancho)} end)}
+    end
+  end
 
 
   def random(altura,ancho) do
       case altura do
         0 -> randomGeneratorHeightOne(0,0)
         1 -> randomGeneratorHeightOne(Enum.random(0..4),ancho)
-        #x -> randomGeneratorHeightN(altura,ancho)
+        _ -> randomGeneratorHeightN(altura,ancho)
       end
   end
 
@@ -74,20 +74,20 @@ defmodule CalcProp do
       {:neg, val} -> !eval(val, asignacion)
       {:and, a, b} -> eval(a, asignacion) and eval(b, asignacion)
       {:or, a, b} -> eval(a, asignacion) or eval(b, asignacion)
-      {:cond, a, b} -> if eval(a, asignacion) && !eval(b, asignacion), do: false, else: true
+      {:cond, a, b} -> !eval(a, asignacion) or eval(b, asignacion)
       {:iff, a, b} -> eval(a, asignacion) == eval(b, asignacion)
       end
   end
 
 end
 
-asig = %{"p" => true, "q" => false}
-IO.puts(CalcProp.eval({:const, true}, asig))
-IO.puts(CalcProp.eval({:var, "q"}, asig))
-IO.puts(CalcProp.eval({:neg, {:var, "q"}}, asig))
-IO.puts(CalcProp.eval({:and, {:var, "q"}, {:const, true}}, asig))
-IO.puts(CalcProp.eval({:or, {:var, "p"}, {:const, false}}, asig))
-IO.puts(CalcProp.eval({:iff, {:var, "p"}, {:const, true}}, asig))
+# asig = %{"p" => true, "q" => false}
+# IO.puts(CalcProp.eval({:const, true}, asig))
+# IO.puts(CalcProp.eval({:var, "q"}, asig))
+# IO.puts(CalcProp.eval({:neg, {:var, "q"}}, asig))
+# IO.puts(CalcProp.eval({:and, {:var, "q"}, {:const, true}}, asig))
+# IO.puts(CalcProp.eval({:or, {:var, "p"}, {:const, false}}, asig))
+# IO.puts(CalcProp.eval({:iff, {:var, "p"}, {:const, true}}, asig))
 
 # nums = Enum.map([1,2,3], &({:number, &1}))
 # fields = Enum.zip(["x", "y"], [bool: true, bool: false])
@@ -114,14 +114,7 @@ IO.puts(CalcProp.eval({:iff, {:var, "p"}, {:const, true}}, asig))
 # (IO.inspect(JSON.random(1,3)))
 # (IO.inspect(JSON.random(1,3)))
 # (IO.inspect(JSON.random(1,3)))
-# {:null}
-# {:number, 95}
-# {:number, 62}
-# {:array, [{:bool, true}, {:string, <<111, 106, 241, 118, 98, 122>>}, {:null}]}
-# {:null}
-# {:number, 27}
-# {:number, 50}
-# {:array, [number: 40, number: 96, string: "kdprkglx"]}
-
-# IO.puts(JSON.stringify(JSON.random(2,1)))
-# IO.puts(JSON.stringify(JSON.random(2,1)))
+# (IO.inspect(JSON.random(2,1)))
+# (IO.inspect(JSON.random(3,2)))
+# (IO.inspect(JSON.random(3,2)))
+# (IO.inspect(JSON.random(2,4)))
