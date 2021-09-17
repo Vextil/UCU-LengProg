@@ -1,0 +1,56 @@
+-- Random JSON Generator
+
+# (IO.inspect(JSON.random(0,0)))
+# (IO.inspect(JSON.random(1,3)))
+# (IO.inspect(JSON.random(1,3)))
+# (IO.inspect(JSON.random(1,3)))
+# (IO.inspect(JSON.random(2,1)))
+# (IO.inspect(JSON.random(3,2)))
+# (IO.inspect(JSON.random(3,2)))
+# (IO.inspect(JSON.random(2,4)))
+
+{:null}
+{:number, 95}
+{:number, 62}
+{:array, [{:bool, true}, {:string, <<111, 106, 241, 118, 98, 122>>}, {:null}]}
+{:null}
+{:number, 27}
+{:number, 50}
+{:array, [number: 40, number: 96, string: "kdprkglx"]}
+{:object,
+ [
+   {"mkebkskw", {:array, [{:array, [number: 61, string: "ivxoc"]}, {:null}]}},
+   {"okiztjbtf", {:array, [number: 7, bool: true]}}
+ ]}
+{:object,
+ [
+   {"by", {:array, [bool: true, bool: false]}},
+   {"dq", {:object, [{"mrlwfswia", {:null}}, {"m", {:null}}]}}
+ ]}
+{:array,
+ [
+   {:null},
+   {:string, "vxwkdt"},
+   {:string, "oxikh"},
+   {:array, [number: 59, bool: true, number: 37, bool: false]}
+ ]}
+
+-- CalcProp
+
+NOTA: Se realizan casos de prueba con las siguientes sentencias 
+
+asig = %{"p" => true, "q" => false}
+IO.puts(CalcProp.eval({:const, true}, asig))
+IO.puts(CalcProp.eval({:var, "q"}, asig))
+IO.puts(CalcProp.eval({:neg, {:var, "q"}}, asig))
+IO.puts(CalcProp.eval({:and, {:var, "q"}, {:const, true}}, asig))
+IO.puts(CalcProp.eval({:or, {:var, "p"}, {:const, false}}, asig))
+IO.puts(CalcProp.eval({:iff, {:var, "p"}, {:const, true}}, asig))
+
+Dando los siguientes resultados:
+true
+false
+true
+false
+true
+true
