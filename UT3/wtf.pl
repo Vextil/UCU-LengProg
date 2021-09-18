@@ -39,6 +39,9 @@ assign(A) :- list_to_assoc(["t" - true, "f" - false], A).
 
 propEval(not(X),A,R) :- propEval(X,A,R1), truthTable(not(R1),R). 
 
+% Este hack no está permitido.
+% propEval(Z(X,Y),A,R) :- propEval(X,A,R1), propEval(Y,A,R2), truthTable(Z(R1,R2),R). 
+
 propEval(and(X,Y),A,R) :- propEval(X,A,R1), propEval(Y,A,R2), truthTable(and(R1,R2),R). 
 
 propEval(or(X,Y),A,R) :- propEval(X,A,R1), propEval(Y,A,R2), truthTable(or(R1,R2),R). 
