@@ -4,7 +4,7 @@
 build/
 nbproject/private/
 .idea/
-
+/UT3/notas.pl
 # General
 .DS_Store
 .AppleDouble
