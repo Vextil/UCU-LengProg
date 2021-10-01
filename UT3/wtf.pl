@@ -54,3 +54,55 @@ propEval(const(true),_,true).
 propEval(const(false),_,false).
 
 propEval(var(X), A, V) :- get_assoc(X, A, V).
+
+% ==========================================================================================
+% EJERCICIO 3 - VARIABLES LIBRES
+
+:- use_module(library(lists)).
+
+free_vars(const(true), []).
+free_vars(const(false), []).
+
+free_vars(var(X), [X]).
+free_vars(not(P), Vs) :- free_vars(P, Vs).
+
+free_vars(and(X,Y), Vs) :- free_vars(X, V1), free_vars(Y, V2), union(V1,V2,Vs).
+free_vars(or(X,Y), Vs) :- free_vars(X, V1), free_vars(Y, V2), union(V1,V2,Vs).
+free_vars(cond(X,Y), Vs) :- free_vars(X, V1), free_vars(Y, V2), union(V1,V2,Vs).
+free_vars(iff(X,Y), Vs) :- free_vars(X, V1), free_vars(Y, V2), union(V1,V2,Vs).
+
+% ==========================================================================================
+% EJERCICIO 4 - ASIGNACIÓN DE VARIABLES
+
+possible_assign([],X) :- empty_assoc(X).
+possible_assign([H | T],Y) :- possible_assign(T, A1), member(V, [true, false]), put_assoc(H, A1, V, Y).
+
+% put assoc (Var,A1,Value,A) : comprueba que A1 forma parte de A, y que Var tiene el valor Value en A.
+
+% ==========================================================================================
+% EJERCICIO 5 - UNIFICACIÓN DE PROPOSICIONES
+% unifica una proposicion con una de sus posibles evaluaciones
+% possible_eval/2
+
+possible_eval(P, E) :- free_vars(P,A), possible_assign(A, A2), propEval(P, A2, E).
+
+% ==========================================================================================
+% EJERCICIO 6 - CLASES DE PROPOSICIONES
+
+% is_tautology(Prop) :- findall(A, possible_eval(Prop, A), R), member(R, [true]).
+% is_contradiction(Prop) :- findall(A, possible_eval(Prop, A), R), member(false, R).
+% is_contingency(Prop) :- findall(A, possible_eval(Prop, A), R), member(true, R), member(false, L).
+
+% is_tautology(Prop) :- free_vars(Prop, R1), possible_assign(R1,R2), member(true, R2), findall(A, possible_eval(Prop, A), R1).
+% truthTable(and(R1,true),true)
+
+is_tautology(Prop) :- findall(Result, possible_eval(Prop, Result), ListResults), evalTrue(ListResults).
+
+evalTrue([]) :- true.
+evalTrue([C|Lista]):-  truthTable(and(C,true), true), evalTrue(Lista).
+
+mostrarResult([]) :- !.
+mostrarResult([C|Lista]) :- write(C) , mostrarResult(Lista).
+
+% is_tautology(cond(var("p"),var("p"))).
+% is_tautology(and(const(true),const(true))).
