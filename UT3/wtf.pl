@@ -89,20 +89,13 @@ possible_eval(P, E) :- free_vars(P,A), possible_assign(A, A2), propEval(P, A2, E
 % ==========================================================================================
 % EJERCICIO 6 - CLASES DE PROPOSICIONES
 
-% is_tautology(Prop) :- findall(A, possible_eval(Prop, A), R), member(R, [true]).
-% is_contradiction(Prop) :- findall(A, possible_eval(Prop, A), R), member(false, R).
-% is_contingency(Prop) :- findall(A, possible_eval(Prop, A), R), member(true, R), member(false, L).
+is_tautology(Prop) :- findall(Result, possible_eval(Prop, Result), ListResults), \+ member(false,ListResults).
+is_contradiction(Prop) :- findall(Result, possible_eval(Prop, Result), ListResults), \+ member(true,ListResults).
+is_contingency(Prop) :- findall(Result, possible_eval(Prop, Result), ListResults), member(true,ListResults), member(false,ListResults).
 
-% is_tautology(Prop) :- free_vars(Prop, R1), possible_assign(R1,R2), member(true, R2), findall(A, possible_eval(Prop, A), R1).
-% truthTable(and(R1,true),true)
+is_tautology(cond(var("p"),var("p"))).
+is_tautology(and(const(true),const(true))).
 
-is_tautology(Prop) :- findall(Result, possible_eval(Prop, Result), ListResults), evalTrue(ListResults).
+is_contradiction(not(iff(var("p"),var("p")))).
 
-evalTrue([]) :- true.
-evalTrue([C|Lista]):-  truthTable(and(C,true), true), evalTrue(Lista).
-
-mostrarResult([]) :- !.
-mostrarResult([C|Lista]) :- write(C) , mostrarResult(Lista).
-
-% is_tautology(cond(var("p"),var("p"))).
-% is_tautology(and(const(true),const(true))).
+is_contingency(and(var("p"),var("p"))).
