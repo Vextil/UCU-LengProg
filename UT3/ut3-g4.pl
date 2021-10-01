@@ -32,27 +32,17 @@ truthTable(iff(false, true), false).
 
 % ==========================================================================================
 % EJERCICIO 2 - CÁLCULO PROPOSICIONAL
-
 :- use_module(library(assoc)).
 
 assign(A) :- list_to_assoc(["t" - true, "f" - false], A).
 
 propEval(not(X),A,R) :- propEval(X,A,R1), truthTable(not(R1),R). 
-
-% Este hack no está permitido.
-% propEval(Z(X,Y),A,R) :- propEval(X,A,R1), propEval(Y,A,R2), truthTable(Z(R1,R2),R). 
-
 propEval(and(X,Y),A,R) :- propEval(X,A,R1), propEval(Y,A,R2), truthTable(and(R1,R2),R). 
-
 propEval(or(X,Y),A,R) :- propEval(X,A,R1), propEval(Y,A,R2), truthTable(or(R1,R2),R). 
-
 propEval(cond(X,Y),A,R) :- propEval(X,A,R1), propEval(Y,A,R2), truthTable(cond(R1,R2),R).
-
 propEval(iff(X,Y),A,R) :- propEval(X,A,R1), propEval(Y,A,R2), truthTable(iff(R1,R2),R). 
-
 propEval(const(true),_,true).
 propEval(const(false),_,false).
-
 propEval(var(X), A, V) :- get_assoc(X, A, V).
 
 % ==========================================================================================
@@ -77,12 +67,9 @@ free_vars(iff(X,Y), Vs) :- free_vars(X, V1), free_vars(Y, V2), union(V1,V2,Vs).
 possible_assign([],X) :- empty_assoc(X).
 possible_assign([H | T],Y) :- possible_assign(T, A1), member(V, [true, false]), put_assoc(H, A1, V, Y).
 
-% put assoc (Var,A1,Value,A) : comprueba que A1 forma parte de A, y que Var tiene el valor Value en A.
 
 % ==========================================================================================
 % EJERCICIO 5 - UNIFICACIÓN DE PROPOSICIONES
-% unifica una proposicion con una de sus posibles evaluaciones
-% possible_eval/2
 
 possible_eval(P, E) :- free_vars(P,A), possible_assign(A, A2), propEval(P, A2, E).
 
@@ -92,8 +79,3 @@ possible_eval(P, E) :- free_vars(P,A), possible_assign(A, A2), propEval(P, A2, E
 is_tautology(Prop) :- findall(Result, possible_eval(Prop, Result), ListResults), \+ member(false,ListResults).
 is_contradiction(Prop) :- findall(Result, possible_eval(Prop, Result), ListResults), \+ member(true,ListResults).
 is_contingency(Prop) :- findall(Result, possible_eval(Prop, Result), ListResults), member(true,ListResults), member(false,ListResults).
-
-% is_tautology(cond(var("p"),var("p"))).
-% is_tautology(and(const(true),const(true))).
-% is_contradiction(not(iff(var("p"),var("p")))).
-% is_contingency(and(var("p"),var("p"))).
