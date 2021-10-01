@@ -93,9 +93,7 @@ is_tautology(Prop) :- findall(Result, possible_eval(Prop, Result), ListResults),
 is_contradiction(Prop) :- findall(Result, possible_eval(Prop, Result), ListResults), \+ member(true,ListResults).
 is_contingency(Prop) :- findall(Result, possible_eval(Prop, Result), ListResults), member(true,ListResults), member(false,ListResults).
 
-is_tautology(cond(var("p"),var("p"))).
-is_tautology(and(const(true),const(true))).
-
-is_contradiction(not(iff(var("p"),var("p")))).
-
-is_contingency(and(var("p"),var("p"))).
+% is_tautology(cond(var("p"),var("p"))).
+% is_tautology(and(const(true),const(true))).
+% is_contradiction(not(iff(var("p"),var("p")))).
+% is_contingency(and(var("p"),var("p"))).
