@@ -22,6 +22,10 @@ class VariableExp < Expression
     @identifier = identifier
   end
 
+  def unparse
+    "#{@identifier}"
+  end
+
   attr_reader :identifier
 end
 
@@ -50,6 +54,10 @@ class Minus < Expression
     @right = right
   end
 
+  def unparse
+    "-#{@right}"
+  end
+
   attr_reader :right
 end
 
@@ -58,6 +66,10 @@ class Addition < Expression
   def initialize(left, right)
     @left = left
     @right = right
+  end
+
+  def unparse
+    "(#{left.unparse} + #{@right.unparse})"
   end
 
   attr_reader :left
@@ -71,6 +83,10 @@ class Subtraction < Expression
     @right = right
   end
 
+  def unparse
+    "#{@left.unparse} - #{@right.unparse}"
+  end
+
   attr_reader :left
   attr_reader :right
 end
@@ -82,6 +98,10 @@ class Multiplication < Expression
     @right = right
   end
 
+  def unparse
+    "(#{@left.unparse} * #{@right.unparse})"
+  end
+
   attr_reader :left
   attr_reader :right
 end
@@ -91,6 +111,10 @@ class Division < Expression
   def initialize(left, right)
     @left = left
     @right = right
+  end
+
+  def unparse
+    "(#{@left.unparse} / #{@right.unparse})"
   end
 
   attr_reader :left
@@ -106,6 +130,10 @@ class ComparisonEqual < Expression
     @right = right
   end
 
+  def unparse
+    "(#{@left.unparse} == #{@right.unparse})"
+  end
+
   attr_reader :left
   attr_reader :right
 end
@@ -115,6 +143,10 @@ class ComparisonDifferent < Expression
   def initialize(left, right)
     @left = left
     @right = right
+  end
+
+  def unparse
+    "(#{@left.unparse} != #{@right.unparse})"
   end
 
   attr_reader :left
@@ -128,6 +160,10 @@ class ComparisonLessThan < Expression
     @right = right
   end
 
+  def unparse
+    "(#{@left.unparse} < #{@right.unparse})"
+  end
+
   attr_reader :left
   attr_reader :right
 end
@@ -137,6 +173,10 @@ class ComparisonLessThanOrEqual < Expression
   def initialize(left, right)
     @left = left
     @right = right
+  end
+
+  def unparse
+    "(#{@left.unparse} <= #{@right.unparse})"
   end
 
   attr_reader :left
@@ -150,6 +190,10 @@ class ComparisonGreaterThan < Expression
     @right = right
   end
 
+  def unparse
+    "(#{@left.unparse} > #{@right.unparse})"
+  end
+
   attr_reader :left
   attr_reader :right
 end
@@ -159,6 +203,10 @@ class ComparisonGreaterThanOrEqual < Expression
   def initialize(left, right)
     @left = left
     @right = right
+  end
+
+  def unparse
+    "(#{@left.unparse} >= #{@right.unparse})"
   end
 
   attr_reader :left
@@ -171,6 +219,10 @@ end
 class TruthValue < Expression
   def initialize(value)
     @value = !!(value)
+  end
+
+  def unparse
+    "(#{@value.unparse})"
   end
 
   attr_reader :value
@@ -186,6 +238,10 @@ class Negation < Expression
     @right = right
   end
 
+  def unparse
+    "(!#{@right.unparse})"
+  end
+
   attr_reader :right
 end
 
@@ -194,6 +250,10 @@ class LogicalAnd < Expression
   def initialize(left, right)
     @left = left
     @right = right
+  end
+
+  def unparse
+    "(#{@left.unparse} && #{@right.unparse})"
   end
 
   attr_reader :left
@@ -205,6 +265,10 @@ class LogicalOr < Expression
   def initialize(left, right)
     @left = left
     @right = right
+  end
+
+  def unparse
+    "(#{@left.unparse} || #{@right.unparse})"
   end
 
   attr_reader :left

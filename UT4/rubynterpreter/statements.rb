@@ -24,6 +24,10 @@ class Assignment < Statement
     @expression = expression
   end
 
+  def unparse
+    "#{@identifier.unparse} = #{@expression.unparse}"
+  end
+
   attr_reader :identifier
   attr_reader :expression
 end
