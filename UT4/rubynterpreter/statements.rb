@@ -49,6 +49,10 @@ class IfThenElse < Statement
     @bodyElse = bodyElse
   end
 
+  def unparse
+    "if (#{@condition.unparse}) #{@bodyThen.unparse} #{@bodyElse.unparse}"
+  end
+
   attr_reader :condition
   attr_reader :bodyThen
   attr_reader :bodyElse
@@ -59,6 +63,10 @@ class WhileDo < Statement
   def initialize (condition, body)
     @condition = condition
     @body = body 
+  end
+
+  def unparse 
+    "while (#{@condition.unparse}) #{@body}"
   end
 
   attr_reader :condition
