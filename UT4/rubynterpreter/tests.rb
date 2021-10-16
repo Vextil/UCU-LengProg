@@ -14,12 +14,11 @@ numero2 = Numeral.new(2)
 numero3 = Numeral.new(3)
 numero4 = Numeral.new(4)
 numero5 = Numeral.new(5)
-str_num1 = "1"
 
 ###### EXPRESSIONS #####
 
 # Numeral
-str_num = Numeral.new(str_num1)
+str_num = Numeral.new(1)
 puts str_num.unparse
 puts str_num.evaluate
 
@@ -177,7 +176,6 @@ puts sentenciaIf.unparse
 puts sentenciaIf.evaluate
 
 # WhileDo
-
 state = {}
 aux = Assignment.new("aux", numero3).evaluate(state)
 condicionWhile = ComparisonLessThanOrEqual.new(VariableExp.new("aux"), numero5)

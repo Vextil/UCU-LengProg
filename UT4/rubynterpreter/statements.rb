@@ -45,7 +45,7 @@ class Block < Statement
   def unparse
     result = "{ "
     @statements.each do 
-      |st| result += "#{st.unparse}\n" 
+      |st| result += "#{st.unparse}" 
     end
     result += "}"
   end
