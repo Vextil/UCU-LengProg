@@ -52,8 +52,9 @@ class Block < Statement
 
   def evaluate(state = {})
     @statements.each do
-      |st| state[st] = st.evaluate(state)
+      |st| st.evaluate(state)
     end
+    state
   end
 
   attr_reader :statements
@@ -93,12 +94,12 @@ class WhileDo < Statement
   end
 
   def unparse 
-    "while (#{@condition.unparse}) #{@body.unparse}"
+    "while (#{@condition.unparse})  #{@body.unparse}"
   end
 
   def evaluate(state = {})  
     while (@condition.evaluate(state)) do
-      state = @body.evaluate(state)
+      @body.evaluate(state)
     end
     state
   end

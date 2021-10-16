@@ -6,6 +6,7 @@ require_relative 'parser'
 ## La salida de este programa muestra el unparse generado por la expresión o la sentencia, y luego
 ## la evaluación realizada con el método evaluate correspondiente.
 
+# Variables a utilizar más adelante
 val_true = TruthValue.new(true)
 val_false = TruthValue.new(false)
 numero1 = Numeral.new(1)
@@ -162,18 +163,9 @@ puts assign.unparse
 puts assign.evaluate
 
 # Block
-bloque = Block.new([Assignment.new("x", numero1), Assignment.new("y", numero2), Addition.new(VariableExp.new("x"), VariableExp.new("y"))])
+bloque = Block.new([Assignment.new("x", numero1), Assignment.new("y", numero2), Assignment.new("z", Addition.new(VariableExp.new("x"), VariableExp.new("y")))])
 puts bloque.unparse
 puts bloque.evaluate
-# bloque = Block.new("{ x = 1; y = 2; x - y;}")
-# puts bloque.unparse
-# puts bloque.evaluate
-# bloque = Block.new("{ x = 1; y = 2; x * y;}")
-# puts bloque.unparse
-# puts bloque.evaluate
-# bloque = Block.new("{ x = 1; y = 2; x / y;}")
-# puts bloque.unparse
-# puts bloque.evaluate
 
 
 # IfThenElse
@@ -186,12 +178,13 @@ puts sentenciaIf.evaluate
 
 # WhileDo
 
-aux = Assignment.new("aux", numero3)
-condicionWhile = ComparisonGreaterThanOrEqual.new(aux, numero5)
-bodyWhile = Assignment.new("aux", Addition.new(aux, numero1))
+state = {}
+aux = Assignment.new("aux", numero3).evaluate(state)
+condicionWhile = ComparisonLessThanOrEqual.new(VariableExp.new("aux"), numero5)
+bodyWhile = Assignment.new("aux", Addition.new(VariableExp.new("aux"), numero1))
 sentenciaWhile = WhileDo.new(condicionWhile, bodyWhile)
 puts sentenciaWhile.unparse
-puts sentenciaWhile.evaluate
+puts sentenciaWhile.evaluate(state)
 
 # PrintStmt
 hello = PrintStmt.new(Addition.new(numero1, numero2))
