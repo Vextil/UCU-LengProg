@@ -11,7 +11,7 @@ class Expression
 
   # Returns the evaluation of this expression. The `state` argument must be a
   # `Hash` mapping variable names to values.
-  def evaluate(state)
+  def evaluate(state = {})
     throw :abstract, "#{self.class.name}.evaluate() is not implemented!"
   end
 end
@@ -26,6 +26,9 @@ class VariableExp < Expression
     "#{@identifier}"
   end
 
+  def evaluate(state = {})
+    state[@identifier]
+  end
   attr_reader :identifier
 end
 
@@ -55,8 +58,12 @@ class Minus < Expression
   end
 
   def unparse
-    "-#{@right}"
+    "(-#{@right.unparse})"
   end
+
+  def evaluate(state = {})
+    0-@right.evaluate(state)
+  end 
 
   attr_reader :right
 end
@@ -70,6 +77,10 @@ class Addition < Expression
 
   def unparse
     "(#{left.unparse} + #{@right.unparse})"
+  end
+
+  def evaluate(state = {})
+    @left.evaluate(state) + @right.evaluate(state)
   end
 
   attr_reader :left
@@ -87,6 +98,10 @@ class Subtraction < Expression
     "#{@left.unparse} - #{@right.unparse}"
   end
 
+  def evaluate(state = {})
+    @left.evaluate(state) - @right.evaluate(state)
+  end
+
   attr_reader :left
   attr_reader :right
 end
@@ -100,6 +115,10 @@ class Multiplication < Expression
 
   def unparse
     "(#{@left.unparse} * #{@right.unparse})"
+  end
+
+  def evaluate(state = {})
+    @left.evaluate(state) * @right.evaluate(state)
   end
 
   attr_reader :left
@@ -117,6 +136,10 @@ class Division < Expression
     "(#{@left.unparse} / #{@right.unparse})"
   end
 
+  def evaluate(state = {})
+    @left.evaluate(state) / @right.evaluate(state)
+  end
+  
   attr_reader :left
   attr_reader :right
 end
@@ -134,6 +157,10 @@ class ComparisonEqual < Expression
     "(#{@left.unparse} == #{@right.unparse})"
   end
 
+  def evaluate(state = {})
+    @left.evaluate(state) == @right.evaluate(state)
+  end
+
   attr_reader :left
   attr_reader :right
 end
@@ -147,6 +174,10 @@ class ComparisonDifferent < Expression
 
   def unparse
     "(#{@left.unparse} != #{@right.unparse})"
+  end
+  
+  def evaluate(state = {})
+    @left.evaluate(state) != @right.evaluate(state)
   end
 
   attr_reader :left
@@ -164,6 +195,10 @@ class ComparisonLessThan < Expression
     "(#{@left.unparse} < #{@right.unparse})"
   end
 
+  def evaluate(state = {})
+    @left.evaluate(state) < @right.evaluate(state)
+  end
+
   attr_reader :left
   attr_reader :right
 end
@@ -177,6 +212,10 @@ class ComparisonLessThanOrEqual < Expression
 
   def unparse
     "(#{@left.unparse} <= #{@right.unparse})"
+  end
+
+  def evaluate(state = {})
+    @left.evaluate(state) <= @right.evaluate(state)
   end
 
   attr_reader :left
@@ -194,6 +233,10 @@ class ComparisonGreaterThan < Expression
     "(#{@left.unparse} > #{@right.unparse})"
   end
 
+  def evaluate(state = {})
+    @left.evaluate(state) > @right.evaluate(state)
+  end
+
   attr_reader :left
   attr_reader :right
 end
@@ -209,6 +252,10 @@ class ComparisonGreaterThanOrEqual < Expression
     "(#{@left.unparse} >= #{@right.unparse})"
   end
 
+  def evaluate(state = {})
+    @left.evaluate(state) >= @right.evaluate(state)
+  end
+
   attr_reader :left
   attr_reader :right
 end
@@ -222,7 +269,7 @@ class TruthValue < Expression
   end
 
   def unparse
-    "(#{@value.unparse})"
+    "(#{@value})"
   end
 
   attr_reader :value
@@ -242,6 +289,10 @@ class Negation < Expression
     "(!#{@right.unparse})"
   end
 
+  def evaluate(state = {})
+    !@right.evaluate(state)
+  end
+
   attr_reader :right
 end
 
@@ -254,6 +305,10 @@ class LogicalAnd < Expression
 
   def unparse
     "(#{@left.unparse} && #{@right.unparse})"
+  end
+
+  def evaluate(state = {})
+    @left.evaluate(state) && @right.evaluate(state)
   end
 
   attr_reader :left
@@ -269,6 +324,10 @@ class LogicalOr < Expression
 
   def unparse
     "(#{@left.unparse} || #{@right.unparse})"
+  end
+
+  def evaluate(state = {})
+    @left.evaluate(state) || @right.evaluate(state)
   end
 
   attr_reader :left

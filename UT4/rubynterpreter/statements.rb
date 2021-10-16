@@ -1,5 +1,4 @@
 # Statements ___________________________________________________________________
-
 # Base class for all statement nodes
 class Statement
 
@@ -25,7 +24,12 @@ class Assignment < Statement
   end
 
   def unparse
-    "#{@identifier.unparse} = #{@expression.unparse}"
+    "#{@identifier} = #{@expression.unparse}"
+  end
+
+  def evaluate(state = {})
+    state[@identifier] = @expression.evaluate(state)
+    state
   end
 
   attr_reader :identifier
@@ -36,6 +40,20 @@ end
 class Block < Statement
   def initialize(statements = [])
     @statements = statements
+  end
+
+  def unparse
+    result = "{ "
+    @statements.each do 
+      |st| result += "#{st.unparse}\n" 
+    end
+    result += "}"
+  end
+
+  def evaluate(state = {})
+    @statements.each do
+      |st| state[st] = st.evaluate(state)
+    end
   end
 
   attr_reader :statements
@@ -50,7 +68,16 @@ class IfThenElse < Statement
   end
 
   def unparse
-    "if (#{@condition.unparse}) #{@bodyThen.unparse} #{@bodyElse.unparse}"
+    "if (#{@condition.unparse}) then #{@bodyThen.unparse} else #{@bodyElse.unparse}"
+  end
+
+  def evaluate(state = {})
+    if (@condition.evaluate(state)) then
+      state = @bodyThen.evaluate(state)
+    else
+      state = @bodyElse.evaluate(state)
+    end
+    state
   end
 
   attr_reader :condition
@@ -66,7 +93,14 @@ class WhileDo < Statement
   end
 
   def unparse 
-    "while (#{@condition.unparse}) #{@body}"
+    "while (#{@condition.unparse}) #{@body.unparse}"
+  end
+
+  def evaluate(state = {})  
+    while (@condition.evaluate(state)) do
+      state = @body.evaluate(state)
+    end
+    state
   end
 
   attr_reader :condition
@@ -77,6 +111,15 @@ end
 class PrintStmt < Statement
   def initialize(expression)
     @expression = expression
+  end
+
+  def unparse
+    "print (#{@expression.unparse});"
+  end
+
+  def evaluate(state = {})   
+    puts @expression.evaluate(state)
+    state
   end
 
   attr_reader :expression

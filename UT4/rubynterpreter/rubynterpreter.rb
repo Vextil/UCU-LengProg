@@ -12,7 +12,7 @@ ARGF.each do |line|
   if (line.strip().empty?)
     ast = parser.parse_string(input.join('\n'))
     puts ast
-    # puts ast.unparse
+    ast.evaluate(state)
     input = []
   else
     input << line
