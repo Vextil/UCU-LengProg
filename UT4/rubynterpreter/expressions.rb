@@ -29,6 +29,7 @@ class VariableExp < Expression
   def evaluate(state = {})
     state[@identifier]
   end
+  
   attr_reader :identifier
 end
 
