@@ -24,7 +24,7 @@ class Factory
     end
 
     def newNumeral(value)
-        if value >= 0 || value <= 10
+        if value >= 0 && value <= 10
             @numerales[value]
         else
             Numeral.new(value)
