@@ -7,8 +7,8 @@ require_relative 'parser'
 ## la evaluación realizada con el método evaluate correspondiente.
 
 # Variables a utilizar más adelante
-val_true = TruthValue.new(true)
-val_false = TruthValue.new(false)
+val_true = TruthValue.true
+val_false = TruthValue.false
 numero1 = Numeral.new(1)
 numero2 = Numeral.new(2)
 numero3 = Numeral.new(3)
@@ -120,10 +120,10 @@ puts comp.unparse
 puts comp.evaluate
 
 # TruthValue
-truth = TruthValue.new(true)
+truth = TruthValue.true
 puts truth.unparse
 puts truth.evaluate
-truth = TruthValue.new(false)
+truth = TruthValue.false
 puts truth.unparse
 puts truth.evaluate 
 
@@ -136,20 +136,20 @@ puts neg.unparse
 puts neg.evaluate
 
 # And
-evaluacionAnd = LogicalAnd.new(TruthValue.new(true), TruthValue.new(false))
+evaluacionAnd = LogicalAnd.new(TruthValue.true, TruthValue.false)
 puts evaluacionAnd.unparse
 puts evaluacionAnd.evaluate
 
-evaluacionAnd = LogicalAnd.new(TruthValue.new(true), TruthValue.new(true))
+evaluacionAnd = LogicalAnd.new(TruthValue.true, TruthValue.true)
 puts evaluacionAnd.unparse
 puts evaluacionAnd.evaluate
 
 # Or
-evaluacionOr = LogicalOr.new(TruthValue.new(true), TruthValue.new(false))
+evaluacionOr = LogicalOr.new(TruthValue.true, TruthValue.false)
 puts evaluacionOr.unparse
 puts evaluacionOr.evaluate
 
-evaluacionOr = LogicalOr.new(TruthValue.new(false), TruthValue.new(false))
+evaluacionOr = LogicalOr.new(TruthValue.false, TruthValue.false)
 puts evaluacionOr.unparse
 puts evaluacionOr.evaluate
 
@@ -169,8 +169,8 @@ puts bloque.evaluate
 
 # IfThenElse
 condicionIf = ComparisonGreaterThanOrEqual.new(numero2, numero3)
-bodyIf = TruthValue.new(true)
-bodyElseIf = TruthValue.new(false)
+bodyIf = TruthValue.true
+bodyElseIf = TruthValue.false
 sentenciaIf = IfThenElse.new(condicionIf, bodyIf, bodyElseIf)
 puts sentenciaIf.unparse
 puts sentenciaIf.evaluate
@@ -188,3 +188,8 @@ puts sentenciaWhile.evaluate(state)
 hello = PrintStmt.new(Addition.new(numero1, numero2))
 puts hello.unparse
 puts hello.evaluate
+
+
+puts TruthValue.true === TruthValue.true
+puts TruthValue.false === TruthValue.false
+puts TruthValue.true != TruthValue.false

@@ -265,6 +265,23 @@ end
 
 # Representation of boolean literals, e.g. `(true)`.
 class TruthValue < Expression
+  @true
+  @false
+
+  def self.true 
+    if @true == nil 
+      @true = TruthValue.new(true)
+    end
+    @true
+  end
+
+  def self.false
+    if @false == nil 
+      @false = TruthValue.new(false)
+    end
+    @false
+  end
+
   def initialize(value)
     @value = !!(value)
   end
