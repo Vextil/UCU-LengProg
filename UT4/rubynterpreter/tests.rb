@@ -1,6 +1,9 @@
 require_relative 'expressions'
 require_relative 'statements'
 require_relative 'parser'
+require_relative 'factory'
+
+@factory = Factory.new()
 
 ## NOTAS
 ## La salida de este programa muestra el unparse generado por la expresión o la sentencia, y luego
@@ -190,6 +193,27 @@ puts hello.unparse
 puts hello.evaluate
 
 
+# Optimizacion
+
+
 puts TruthValue.true === TruthValue.true
 puts TruthValue.false === TruthValue.false
 puts TruthValue.true != TruthValue.false
+
+puts @factory.newNumeral(0) === @factory.newNumeral(0)
+puts @factory.newNumeral(1) === @factory.newNumeral(1)
+puts @factory.newNumeral(2) === @factory.newNumeral(2)
+puts @factory.newNumeral(3) === @factory.newNumeral(3)
+puts @factory.newNumeral(4) === @factory.newNumeral(4)
+puts @factory.newNumeral(5) === @factory.newNumeral(5)
+puts @factory.newNumeral(6) === @factory.newNumeral(6)
+puts @factory.newNumeral(7) === @factory.newNumeral(7)
+puts @factory.newNumeral(8) === @factory.newNumeral(8)
+puts @factory.newNumeral(9) === @factory.newNumeral(9)
+puts @factory.newNumeral(10) === @factory.newNumeral(10)
+puts @factory.newNumeral(11) != @factory.newNumeral(11)
+
+
+
+
+

@@ -265,8 +265,6 @@ end
 
 # Representation of boolean literals, e.g. `(true)`.
 class TruthValue < Expression
-  @true
-  @false
 
   def self.true 
     if @true == nil 
