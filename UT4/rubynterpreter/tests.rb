@@ -1,14 +1,17 @@
 require_relative 'expressions'
 require_relative 'statements'
 require_relative 'parser'
+require_relative 'factory'
+
+@factory = Factory.new()
 
 ## NOTAS
 ## La salida de este programa muestra el unparse generado por la expresión o la sentencia, y luego
 ## la evaluación realizada con el método evaluate correspondiente.
 
 # Variables a utilizar más adelante
-val_true = TruthValue.new(true)
-val_false = TruthValue.new(false)
+val_true = TruthValue.true
+val_false = TruthValue.false
 numero1 = Numeral.new(1)
 numero2 = Numeral.new(2)
 numero3 = Numeral.new(3)
@@ -120,10 +123,10 @@ puts comp.unparse
 puts comp.evaluate
 
 # TruthValue
-truth = TruthValue.new(true)
+truth = TruthValue.true
 puts truth.unparse
 puts truth.evaluate
-truth = TruthValue.new(false)
+truth = TruthValue.false
 puts truth.unparse
 puts truth.evaluate 
 
@@ -136,20 +139,20 @@ puts neg.unparse
 puts neg.evaluate
 
 # And
-evaluacionAnd = LogicalAnd.new(TruthValue.new(true), TruthValue.new(false))
+evaluacionAnd = LogicalAnd.new(TruthValue.true, TruthValue.false)
 puts evaluacionAnd.unparse
 puts evaluacionAnd.evaluate
 
-evaluacionAnd = LogicalAnd.new(TruthValue.new(true), TruthValue.new(true))
+evaluacionAnd = LogicalAnd.new(TruthValue.true, TruthValue.true)
 puts evaluacionAnd.unparse
 puts evaluacionAnd.evaluate
 
 # Or
-evaluacionOr = LogicalOr.new(TruthValue.new(true), TruthValue.new(false))
+evaluacionOr = LogicalOr.new(TruthValue.true, TruthValue.false)
 puts evaluacionOr.unparse
 puts evaluacionOr.evaluate
 
-evaluacionOr = LogicalOr.new(TruthValue.new(false), TruthValue.new(false))
+evaluacionOr = LogicalOr.new(TruthValue.false, TruthValue.false)
 puts evaluacionOr.unparse
 puts evaluacionOr.evaluate
 
@@ -169,8 +172,8 @@ puts bloque.evaluate
 
 # IfThenElse
 condicionIf = ComparisonGreaterThanOrEqual.new(numero2, numero3)
-bodyIf = TruthValue.new(true)
-bodyElseIf = TruthValue.new(false)
+bodyIf = TruthValue.true
+bodyElseIf = TruthValue.false
 sentenciaIf = IfThenElse.new(condicionIf, bodyIf, bodyElseIf)
 puts sentenciaIf.unparse
 puts sentenciaIf.evaluate
@@ -188,3 +191,29 @@ puts sentenciaWhile.evaluate(state)
 hello = PrintStmt.new(Addition.new(numero1, numero2))
 puts hello.unparse
 puts hello.evaluate
+
+
+# Optimizacion
+
+
+puts TruthValue.true === TruthValue.true
+puts TruthValue.false === TruthValue.false
+puts TruthValue.true != TruthValue.false
+
+puts @factory.newNumeral(0) === @factory.newNumeral(0)
+puts @factory.newNumeral(1) === @factory.newNumeral(1)
+puts @factory.newNumeral(2) === @factory.newNumeral(2)
+puts @factory.newNumeral(3) === @factory.newNumeral(3)
+puts @factory.newNumeral(4) === @factory.newNumeral(4)
+puts @factory.newNumeral(5) === @factory.newNumeral(5)
+puts @factory.newNumeral(6) === @factory.newNumeral(6)
+puts @factory.newNumeral(7) === @factory.newNumeral(7)
+puts @factory.newNumeral(8) === @factory.newNumeral(8)
+puts @factory.newNumeral(9) === @factory.newNumeral(9)
+puts @factory.newNumeral(10) === @factory.newNumeral(10)
+puts @factory.newNumeral(11) != @factory.newNumeral(11)
+
+
+
+
+
