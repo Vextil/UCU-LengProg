@@ -24,10 +24,10 @@ delay(800, '===== TIMEOUT =====').then((result) => {
 
 function timeout(milliseconds, promise) {
     var timeoutPromise = new Promise((resolve, reject) => {
-        setTimeout(() => reject('No.'), milliseconds)
+        setTimeout(() => reject(new Error('No.')), milliseconds)
     });
     return Promise.race([promise, timeoutPromise]);
 }
 
-timeout(1000, delay(1500)).then(console.log, console.log);
 timeout(2000, delay(1500)).then(console.log);
+timeout(2100, delay(2500)).then(console.log);

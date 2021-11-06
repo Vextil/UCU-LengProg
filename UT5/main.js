@@ -93,7 +93,7 @@ delay(800, '===== TIMEOUT =====').then((result) => {
 
 function timeout(milliseconds, promise) {
     var timeoutPromise = new Promise((resolve, reject) => {
-        setTimeout(() => reject('No.'), milliseconds)
+        setTimeout(() => reject(new Error('No.')), milliseconds)
     });
     return Promise.race([promise, timeoutPromise]);
 }
