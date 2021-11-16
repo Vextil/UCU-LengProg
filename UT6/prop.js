@@ -1,36 +1,37 @@
-class Prop {
+export class Prop {
 
     evaluate(ctx) {
-
     }
-    
+
 }
 
 /**
  * Clase representativa de una variable.
  */
-class Variable extends Prop {
-    
-    constructor(varName){
+export class Variable extends Prop {
+
+    constructor(varName) {
+        super();
         this.varName = varName;
     }
 
     evaluate(ctx) {
-        return ctx[varName];
+        return ctx[this.varName];
     }
 
     toString() {
-        return "(" + varName + ")";
+        return this.varName;
     }
-    
+
 }
 
 /**
  * Clase representativa de una negación.
  */
-class Negacion extends Prop {
+export class Negacion extends Prop {
 
     constructor(prop) {
+        super();
         this.prop = prop;
     }
 
@@ -41,25 +42,26 @@ class Negacion extends Prop {
     toString() {
         return "¬" + this.prop.toString();
     }
-    
+
 }
 
 /**
  * Clase representativa de una conjunción.
  */
-class Conjuncion extends Prop {
+export class Conjuncion extends Prop {
 
     constructor(left, right) {
+        super();
         this.left = left;
         this.right = right;
     }
 
-    evaluate(ctx) { 
+    evaluate(ctx) {
         return this.left.evaluate(ctx) && this.right.evaluate(ctx);
     }
 
     toString() {
-        return "(" + this.left.toString() + " && " + this.right.toString() + ")";
+        return "(" + this.left.toString() + " ∧ " + this.right.toString() + ")";
     }
 
 }
@@ -67,19 +69,20 @@ class Conjuncion extends Prop {
 /**
  * Clase representativa de una disjunción.
  */
-class Disjuncion extends Prop {
+export class Disjuncion extends Prop {
 
     constructor(left, right) {
+        super();
         this.left = left;
         this.right = right;
     }
 
-    evaluate(ctx) { 
+    evaluate(ctx) {
         return this.left.evaluate(ctx) || this.right.evaluate(ctx);
     }
 
-    toString(){
-        return "(" + this.left.toString() + " | " + this.right.toString() + ")";
+    toString() {
+        return "(" + this.left.toString() + " ∨ " + this.right.toString() + ")";
     }
 
 }
@@ -87,18 +90,19 @@ class Disjuncion extends Prop {
 /**
  * Clase representativa de una proposición condicional.
  */
-class Condicional extends Prop {
+export class Condicional extends Prop {
 
     constructor(left, right) {
+        super();
         this.left = left;
         this.right = right;
     }
 
-    evaluate(ctx) { 
+    evaluate(ctx) {
         return !this.left.evaluate(ctx) || this.right.evaluate(ctx);
     }
 
-    toString(){
+    toString() {
         return "(" + this.left.toString() + " → " + this.right.toString() + ")";
     }
 
@@ -107,15 +111,16 @@ class Condicional extends Prop {
 /**
  * Clase representativa de una proposición bicondicional.
  */
-class Bicondicional extends Prop {
+export class Bicondicional extends Prop {
 
     constructor(left, right) {
+        super();
         this.left = left;
         this.right = right;
     }
 
     evaluate(ctx) {
-        return this.left.evaluate(ctx) && this.right.evaluate(ctx) ||  !this.left.evaluate(ctx) && !this.right.evaluate(ctx);
+        return this.left.evaluate(ctx) && this.right.evaluate(ctx) || !this.left.evaluate(ctx) && !this.right.evaluate(ctx);
     }
 
     toString() {
