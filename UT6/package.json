@@ -1,6 +1,6 @@
 {
   "type": "module",
   "dependencies": {
-    "seedrandom": "^3.0.5"
+    "esm-seedrandom": "^3.0.5"
   }
 }
