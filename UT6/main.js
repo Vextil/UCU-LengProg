@@ -9,4 +9,6 @@ console.log(arbol.toString());
 console.log(evalProp(arbol, { 'a': true, 'b': false, 'c': true }))
 console.log(truthTable(arbol, ['a', 'b', 'c']));
 
-console.log("Random: ", randomTruthTable(rng, ['a', 'b', 'c']));
+var randomTable = randomTruthTable(rng, ['a', 'b', 'c']);
+console.log("Random: ", randomTable);
+console.log("Fitness: ", fitness(arbol, randomTable));

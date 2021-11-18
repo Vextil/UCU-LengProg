@@ -1,4 +1,5 @@
-import { inputPermutations } from "./utils.js"
+import { varPermutations } from "./utils.js"
+import { Prop } from "./prop.js";
 
 /**
  * Calcula una tabla de verdad aleatoria para poder probar la búsqueda.
@@ -7,16 +8,17 @@ import { inputPermutations } from "./utils.js"
  * @returns {array}
  */
 export function randomTruthTable(rng, vars) {
-    return inputPermutations(vars.length).map(p => [p, !!Math.round(rng())]);
+    return varPermutations(vars).map(p => [p, !!Math.round(rng())]);
 }
 
 /**
  * Calcula la proporción de casos en los que la evaluación de la proposición dada coincide con la tabla de verdad dada.
  * @param {Prop} prop Proposición Prop a evaluar.
+ * @param {array} truthTable Lista de pares (valores, resultado).
  * @returns {number}
  */
 export function fitness(prop, truthTable) {
-
+    return truthTable.filter(t => prop.evaluate(t[0]) === t[1]).length / truthTable.length;
 }
 
 /**

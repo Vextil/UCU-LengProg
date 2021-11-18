@@ -1,16 +1,18 @@
 /**
  * Genera una tabla con todas las permutaciones de true/false para cierta cantidad de elementos.
- * @param {number} varCount Cantidad de elementos a permutar.
+ * @param {String[]} vars Lista de nombres de variables.
  * @returns {array}
  */
-export function inputPermutations(varCount) {
+export function varPermutations(vars) {
     let permutations = [];
-    for (let i = 0; i < (1 << varCount); i++) {
+    for (let i = 0; i < (1 << vars.length); i++) {
         let permutation = [];
-        for (let j = varCount - 1; j >= 0; j--) {
-            permutation.push(Boolean(i & (1 << j)));
+        for (let j = vars.length - 1; j >= 0; j--) {
+            let key = vars[vars.length - j - 1];
+            let value = Boolean(i & (1 << j));
+            permutation.push([key, value]);
         }
-        permutations.push(permutation);
+        permutations.push(Object.fromEntries(permutation));
     }
     return permutations;
 }

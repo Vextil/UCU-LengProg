@@ -7,7 +7,7 @@ import {
     Condicional,
     Bicondicional
 } from './prop.js'
-import { inputPermutations } from './utils.js';
+import { varPermutations } from './utils.js';
 
 
 /**
@@ -63,11 +63,10 @@ export function evalProp(prop, value) {
  * @returns {array}
  */
 export function truthTable(prop, vars) {
-    let permutations = inputPermutations(vars.length);
+    let permutations = varPermutations(vars);
     let result = [];
     for (let permutation of permutations) {
-        let varsWithValues = Object.fromEntries(vars.map((v, i) => [v, permutation[i]]));
-        let propResult = prop.evaluate(varsWithValues);
+        let propResult = prop.evaluate(permutation);
         result.push([permutation, propResult])
     }
     return result;
