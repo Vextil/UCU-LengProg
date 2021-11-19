@@ -5,6 +5,20 @@ export class Prop {
 
 }
 
+export class PropArgs {
+
+    /**
+     * @param {String[]} vars 
+     * @param {number} maxHeight 
+     * @param {number} minHeight 
+     */
+    constructor(vars, maxHeight, minHeight) {
+        this.vars = vars;
+        this.maxHeight = maxHeight;
+        this.minHeight = minHeight;
+    }
+}
+
 /**
  * Clase representativa de una variable.
  */

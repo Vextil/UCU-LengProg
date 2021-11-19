@@ -1,6 +1,7 @@
 {
   "type": "module",
   "dependencies": {
+    "colors": "^1.4.0",
     "esm-seedrandom": "^3.0.5"
   }
 }

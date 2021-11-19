@@ -15,7 +15,7 @@ import { varPermutations } from './utils.js';
  * @param {seedrandom} rng Generador de números aleatorios cuya semilla se debe controlar
  * @param {String[]} vars Lista de nombres de variables
  * @param {number} maxHeight Altura máxima del árbol de expresión resultante
- * @param {number} maxHeight Altura mínima del árbol de expresión resultante
+ * @param {number} minHeight Altura mínima del árbol de expresión resultante
  * @returns {Prop}
  */
 export function randomProp(rng, vars, maxHeight, minHeight) {

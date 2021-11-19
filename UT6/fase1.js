@@ -1,5 +1,6 @@
 import { varPermutations } from "./utils.js"
-import { Prop } from "./prop.js";
+import { Prop, PropArgs } from "./prop.js";
+import { randomProp } from "./fase0.js";
 
 /**
  * Calcula una tabla de verdad aleatoria para poder probar la búsqueda.
@@ -27,9 +28,23 @@ export function fitness(prop, truthTable) {
  * @param {array} truthTable Lista de pares (valores, resultado).
  * @param {number} count Cantidad de expresiones aleatorias a generar y probar.
  * @param {number} maxHeight Altura máxima del árbol de expresión resultante
- * @param {object} propArgs es el conjunto de argumentos a usar en la generación aleatoria de expresiones: vars, maxHeight y minHeight.
+ * @param {PropArgs} propArgs es el conjunto de argumentos a usar en la generación aleatoria de expresiones: vars, maxHeight y minHeight.
  * @returns {Prop}
  */
 export function randomSearch(rng, truthTable, count, propArgs) {
-
+    let bestFitness = Number.NEGATIVE_INFINITY;
+    let bestProp = null;
+    for(let i = 0; i < count; i++) {
+        let prop = randomProp(rng, propArgs.vars, propArgs.maxHeight, propArgs.minHeight);
+        let propFitness = fitness(prop, truthTable);
+        console.log(prop, propFitness);
+        if (propFitness === 1) {
+            return prop;
+        }
+        if (propFitness > bestFitness) {
+            bestFitness = propFitness;
+            bestProp = prop;
+        }
+    }
+    return bestProp;
 }
