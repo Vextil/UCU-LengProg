@@ -22,6 +22,7 @@ El proyecto se encuentra separado en scripts de acuerdo a la fase, o a su utilid
 
 ## Notas de las pruebas
 * Las pruebas mostradas en las siguientes secciones se realizaron con una y dos variables. 
+* Las pruebas se realizan de manera unitaria (por fase) y en conjunto. 
 * En la sección Extra se encuentra la realización en conjunto de todos los métodos con tres variables. 
 * Una fase depende de la otra, por lo que al momento de realizar estas pruebas se utilizan las variables definidas con anterioridad para otra fase.
 ---
@@ -99,8 +100,8 @@ let bestRandomProp = randomSearch(rng, randomTable, 5, {vars, maxHeight, minHeig
 console.log("Best prop: ", bestRandomProp, fitness(bestRandomProp, randomTable));
 ```
 
-###### Resultado de ejecución con dos variables
-[PONER IMAGEN]
+###### Resultado de ejecución con una variable
+![Fase11var](images_report/fase1/fase1_1variable.png)
 
 ##### Dos variables
 ```js
@@ -119,7 +120,7 @@ console.log("Best prop: ", bestRandomProp, fitness(bestRandomProp, randomTable))
 ```
 
 ###### Resultado de ejecución con dos variables
-[PONER IMAGEN]
+![Fase12var](images_report/fase1/fase1_2variables.png)
 
 <div style="page-break-after: always;"></div>
 
