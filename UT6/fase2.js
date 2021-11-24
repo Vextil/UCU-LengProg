@@ -1,5 +1,6 @@
 import { randomProp } from "./fase0.js";
 import { fitness } from "./fase1.js";
+import { PropArgs, Prop } from "./prop.js";
 
 /**
  * Calcula los individuos con los cuales inicia algoritmo evolutivo.
@@ -12,7 +13,7 @@ export function initialPopulation(rng, vars, count) {
     let result = [];
     let minHeight = 1;
     let maxHeight = vars.length + 1;
-    for(let i = 0; i < count; i++) {
+    for (let i = 0; i < count; i++) {
         result.push(randomProp(rng, vars, maxHeight, minHeight))
     }
     return result;
@@ -36,18 +37,26 @@ export function assessPopulation(population, truthTable) {
  * @param {number} count Cantidad de individuos a seleccionar.
  * @returns {array}
  */
-export function selection(rng, population, count){
-    // let totalFitness = population
-    //     .map(([p, f]) => f)
-    //     .reduce((a, b) => a + b, 0);
-    // let probabilities = population.map(([p, f]) => f/totalFitness);
-    
-    let probabilityList = population.flatMap(([p, fitness], i) => new Array(Math.round(fitness * 10)).fill(i));
+export function selection(rng, population, count) {
+    if (count > population.length) {
+        throw "Count no puede ser más grande que la población.";
+    }
     let result = [];
-    for (let i = 0; i < count ; i++) {
-        let random = Math.round(rng() * probabilityList.length);
-        result.push(population[probabilityList[random]][0]);
-        probabilityList = probabilityList.filter(p => p !== probabilityList[random]);
+    for (let i = 0; i < count; i++) {
+        let totalFitness = population.reduce((a, [p, f]) => a + f, 0);
+        let randomFitness = Math.trunc(rng() * totalFitness);
+        let accumulatedFitness = 0;
+        for (let [index, [p, f]] of population.entries()) {
+            accumulatedFitness += f;
+            if (accumulatedFitness >= randomFitness) {
+                result.push(p);
+                population.splice(index, 1);
+                break;
+            }
+        }
+    }
+    if (result.length < count) {
+        throw 'Esto no debería pasar, el método selection quedó roto... tenemos que aprender a programar.';
     }
     return result;
 }
@@ -66,12 +75,12 @@ export function mutation(rng, prop, propArgs) {
      */
     let minH = propArgs.minHeight;
     let result = prop;
-    
+
     let thisNodo = prop;
     let i = 0
     //busco un nodo
-    while ( i < minH) {
-        if (typeof(thisNodo) !== Negacion && typeof(thisNodo) !== Variable) {
+    while (i < minH) {
+        if (typeof (thisNodo) !== Negacion && typeof (thisNodo) !== Variable) {
             num = rng();
             if (num <= 0.5) {
                 thisNodo = thisNodo.left;
@@ -79,20 +88,20 @@ export function mutation(rng, prop, propArgs) {
                 thisNodo = thisNodo.right;
             }
         }
-        i ++ ;
+        i++;
     }
     //hallo la altura del nodo a mutar
-    let altura = alturaNodo(thisNodo); 
+    let altura = alturaNodo(thisNodo);
     let propRnm = randomProp(rng, propArgs.vars, altura, altura);
-    
 
 
-    
+
+
 }
 
 function alturaNodo(prop) {
-    if (typeof(prop) !==  Negacion && typeof(prop) !== Variable) {
-        return 1+(Math.max(alturaNodo(prop.left), alturaNodo(prop.right)));
+    if (typeof (prop) !== Negacion && typeof (prop) !== Variable) {
+        return 1 + (Math.max(alturaNodo(prop.left), alturaNodo(prop.right)));
     } else {
         return 1;
     }
@@ -108,32 +117,39 @@ function alturaNodo(prop) {
  * @param {PropArgs} propArgs Conjunto de argumentos a usar en la generación aleatoria de expresiones: vars, maxHeight y minHeight.
  * @returns {array}
  */
-export function evolutionStrategy(rng, truthTable, steps, count, propArgs){
-    
+export function evolutionStrategy(rng, truthTable, steps, count, propArgs) {
+
     let population = initialPopulation(rng, propArgs.vars, count);
-    let populationAccessed = assessPopulation(population, truthTable);
-    let best = populationAccessed.reduce((a, b) => a && a[1] > b[1] ? a : b);
+    let populationAssessed = assessPopulation(population, truthTable);
+    let best = populationAssessed.reduce((a, b) => a && a[1] > b[1] ? a : b);
     let bestFitness = best[1];
     let step = 0;
-    while (bestFitness < 1 && step < steps){
+    while (bestFitness < 1 && step < steps) {
         step++;
-        let selected = selection(rng, population, count);
-        let mutated = selected.map(s => mutation2(rng, s, propArgs));
-        population = mutated;
-        populationAccessed = assessPopulation(population, truthTable);
-        best = populationAccessed.reduce((a, b) => a && a[1] > b[1] ? a : b);
+        let selected = selection(rng, populationAssessed, count);
+        population = selected.map(s => mutation3(rng, s, propArgs));
+        populationAssessed = assessPopulation(population, truthTable);
+        best = populationAssessed.reduce((a, b) => a && a[1] > b[1] ? a : b);
         bestFitness = best[1];
-        // let mutation = mutation2(rng, best, propArgs);
-        // let mutationFitness = fitness(mutation);
-        // if (mutationFitness > bestFitness) {
-        //     best = mutation[0];
-        //     bestFitness = mutationFitness;
-        // }
     }
 
     return best;
 }
 
-export function mutation2 (rng, prop, propArgs){
-    return randomProp(rng, propArgs.vars, propArgs.maxHeight, propArgs.minHeight);
+/**
+ * Calcula una nueva expresión como modificación por una expresión dada. 
+ * Se toma un nodo del árbol de expresión al azar y se lo reemplaza por un subárbol generado al azar.
+ * @param {prng_alea} rng Generador de números aleatorios a usar.
+ * @param {Prop} prop  Expresión Prop a mutar.
+ * @param {PropArgs} propArgs Conjunto de argumentos a usar en la generación aleatoria de expresiones
+ * @returns {array}
+ */
+export function mutation3(rng, prop, propArgs) {
+    let nodes = prop.flatten();
+    let randomIndex = Math.round(rng() * (nodes.length - 1));
+    let [search, height] = nodes[randomIndex];
+    let maxHeight = propArgs.maxHeight - height;
+    let minHeight = Math.min(0, propArgs.minHeight - height);
+    let replace = randomProp(rng, propArgs.vars, maxHeight, minHeight);
+    return prop.searchAndReplace(search, replace);
 }
