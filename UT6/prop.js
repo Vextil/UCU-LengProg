@@ -1,6 +1,64 @@
 export class Prop {
 
+    /**
+     * Retorna cada nodo del árbol y su altura en una lista. 
+     * Ejemplo: 
+     * Para (a ∧ ¬b) retorna la siguiente lista:
+     * [
+     *     [Conjuncion, 0],
+     *     [Variable, 1],
+     *     [Negacion, 1],
+     *     [Variable, 2]
+     * ]
+     * @param {number} height La altura del nodo actual, utilizada para calcular la altura de los hijos.
+     * @returns La lista de nodos con sus alturas.
+     */
+    flatten(height = 0) {
+        let result = [[this, height]];
+        if (this.left) {
+            let leftChildren = this.left.flatten(height + 1);
+            result = result.concat(leftChildren);
+        }
+        if (this.right) {
+            let rightChildren = this.right.flatten(height + 1);
+            result = result.concat(rightChildren);
+        }
+        return result;
+    }
+
+    /**
+     * Reeplaza un subárbol por otro reconstruyendo el árbol recursivamente.
+     * (Gracias programación funcional por la idea).
+     * @param {Prop} search La raiz del subarbol a buscar para ser reemplazado.
+     * @param {Prop} replace La raiz del nuevo subarbol que tomará su lugar.
+     * @returns El mismo árbol [search] reemplazado por [replace].
+     */
+    searchAndReplace(search, replace) {
+        if (this === search) {
+            return replace;
+        }
+        if (this.left) {
+            this.left = this.left.searchAndReplace(search, replace);
+        }
+        if (this.right) {
+            this.right = this.right.searchAndReplace(search, replace);
+        }
+        return this;
+    }
+
+    /**
+     * Evalúa la expresión con los valores del contexto para cada variable.
+     * @param {object} ctx Objeto con los nombres y valores de cada variable.
+     * @returns {boolean}
+     */
     evaluate(ctx) {
+    }
+
+    /**
+     * Retorna la representación matemática de la proposición.
+     * @returns {string}
+     */
+    toString() {
     }
 
 }
