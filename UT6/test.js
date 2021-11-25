@@ -108,7 +108,7 @@ describe('fitness', () => {
   })
 });
 
-describe('randomTruthTable', () => {
+describe('randomTruthTable - 1 variable', () => {
   let tablaVerdadRandom = randomTruthTable(prng_alea("sddsf"), ['a']);
   it('La tabla de la verdad contiene todas las permutaciones de 1 variable', () => {
     let expected = [
@@ -118,5 +118,44 @@ describe('randomTruthTable', () => {
     expected.forEach((value, index) => {
       assertEquals(value, tablaVerdadRandom[index][0], 'fila ' + index);
     });
+  });
+});
+
+describe('randomTruthTable - 2 variables', () => {
+  let tablaVerdadRandom = randomTruthTable(prng_alea("sddsf"), ['a', 'b']);
+  it('La tabla de la verdad contiene todas las permutaciones de 2 variables', () => {
+    let expected = [
+      { a: false, b: false },
+      { a: false, b: true },
+      { a: true, b: false },
+      { a: true, b: true }
+    ];
+    expected.forEach((value, index) => {
+      assertEquals(value, tablaVerdadRandom[index][0], 'fila ' + index);
+    });
+  });
+});
+
+describe('selection - 2 variables - Count mayor que población', () => {
+  let proposicion = new Conjuncion(new Bicondicional(new Variable('b'), new Variable('a')), new Variable('b'));
+  let tablaVerdad = truthTable(proposicion, ['a', 'b']);
+  let pop = initialPopulation(prng_alea("sddsf"), ['a', 'b'], 1);
+  let population = assessPopulation(pop, tablaVerdad);
+  let sel = selection(prng_alea("sddsf"), population, 2);
+  let expected = "Error: Count no puede ser más grande que la población.";
+  it('No puede ejecutar dado que count es más grande que la población creada.', () => {
+    assertException(sel, expected);
+  });
+});
+
+describe('selection - 2 variables - 1 Prop devuelta', () => {
+  let proposicion = new Conjuncion(new Bicondicional(new Variable('b'), new Variable('a')), new Variable('b'));
+  let tablaVerdad = truthTable(proposicion, ['a', 'b']);
+  let pop = initialPopulation(prng_alea("sddsf"), ['a', 'b'], 1);
+  let population = assessPopulation(pop, tablaVerdad);
+  let sel = selection(prng_alea("sddsf"), population, 1);
+  let expected = proposicion.toString();
+  it('Selecciona una proposición aleatoria', () => {
+    assertEquals(expected, sel.toString());
   });
 });
