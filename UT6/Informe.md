@@ -12,6 +12,7 @@ El proyecto se encuentra separado en scripts de acuerdo a la fase, o a su utilid
 | main.js  | Archivo a ejecutar para visualizar programa.                                                |
 | utils.js | Métodos que sirven para un propósito compartido.                                            |
 | prop.js  | Estructura de datos a utilizar a lo largo del proyecto.                                     |
+| test.js| Conjunto de pruebas de los métodos de las distintas fases.                                  |
 | fase0.js | Métodos de la fase 0.                                                                       |
 | fase1.js | Métodos de la fase 1.                                                                       |
 | fase2.js | Métodos de la fase 2.                                                                       |
@@ -22,7 +23,7 @@ El proyecto se encuentra separado en scripts de acuerdo a la fase, o a su utilid
 
 ## Notas de las pruebas
 * Las pruebas mostradas en las siguientes secciones se realizaron con una y dos variables. 
-* Las pruebas se realizan de manera unitaria (por fase) y en conjunto. 
+* Las pruebas se realizan de manera unitaria (por fase) y en conjunto. Ver `test.js`. 
 * En la sección Extra se encuentra la realización en conjunto de todos los métodos con tres variables. 
 * Una fase depende de la otra, por lo que al momento de realizar estas pruebas se utilizan las variables definidas con anterioridad para otra fase.
 ---
