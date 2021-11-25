@@ -2,8 +2,8 @@ import { prng_alea } from 'esm-seedrandom';
 import { randomProp, evalProp, truthTable } from './fase0.js';
 import { randomTruthTable, fitness, randomSearch } from './fase1.js';
 import { assessPopulation, initialPopulation, selection, evolutionStrategy } from './fase2.js';
-import { Conjuncion, Negacion, Variable } from './prop.js';
-import { printHeader, describe, it, assertEquals } from './utils.js';
+import { Bicondicional, Conjuncion, Negacion, Variable } from './prop.js';
+import { printHeader, describe, it, assertEquals, assertNotEquals, assertTrue, assertFalse } from './utils.js';
 
 var rng3 = prng_alea("test3");
 var rng4 = prng_alea("test4");
@@ -59,27 +59,45 @@ describe('Prop.flatten', () => {
   })
 });
 
+describe('Prop.searchAndReplace', () => {
+  let prop = new Conjuncion(new Variable('a'), new Negacion(new Variable('b')));
+  const search = prop.right.prop;
+  const replace = new Bicondicional(new Negacion(new Variable('c')), new Variable('d'));
+  it('no contiene el bicondicional originalmente', () => {
+    assertNotEquals(replace, prop.right.prop);
+  })
+  prop = prop.searchAndReplace(search, replace);
+  const flatReplaced = prop.flatten();
+  it('contiene el bicondicional', () => {
+    assertEquals(replace, prop.right.prop);
+  })
+  it('contiene el subarbol completo', () => {
+    const expected = new Conjuncion(new Variable('a'), new Negacion(new Bicondicional(new Negacion(new Variable('c')), new Variable('d'))));
+    assertEquals(expected.flatten(), flatReplaced);
+  })
+});
+
 describe('evalProp', () => {
   let proposicion = randomProp(prng_alea("sddsf"), ['a'], 4, 2);
   let verdadero = evalProp(proposicion, { 'a': false });
-  it ('La expresión dio como resultado Verdadero para a = true.', () => {
+  it('La expresión dio como resultado Verdadero para a = true.', () => {
     assertEquals(true, verdadero);
   });
-})
+});
 
 describe('truthTable', () => {
   let proposicion = randomProp(prng_alea("sddsf"), ['a'], 4, 2);
   tablaVerdad = truthTable(proposicion, ['a']);
   it('La tabla de la verdad contiene todas las permutaciones de 1 variable', () => {
     let expected = [
-      {a: false},
-      {a: true}
+      { a: false },
+      { a: true }
     ];
     expected.forEach((value, index) => {
       assertEquals(value, tablaVerdad[index][0], 'fila ' + index);
     });
   });
-})
+});
 
 describe('fitness', () => {
   let proposicion = randomProp(prng_alea("sddsf"), ['a'], 4, 2);
@@ -94,8 +112,8 @@ describe('randomTruthTable', () => {
   let tablaVerdadRandom = randomTruthTable(prng_alea("sddsf"), ['a']);
   it('La tabla de la verdad contiene todas las permutaciones de 1 variable', () => {
     let expected = [
-      {a: false},
-      {a: true}
+      { a: false },
+      { a: true }
     ];
     expected.forEach((value, index) => {
       assertEquals(value, tablaVerdad[index][0], 'fila ' + index);

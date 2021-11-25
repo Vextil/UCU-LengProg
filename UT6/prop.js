@@ -47,6 +47,9 @@ export class Prop {
         if (this.right) {
             this.right = this.right.searchAndReplace(search, replace);
         }
+        if (this.prop) {
+            this.prop = this.prop.searchAndReplace(search, replace);
+        }
         return this;
     }
 

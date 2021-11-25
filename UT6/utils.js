@@ -68,3 +68,38 @@ export function assertEquals(expected, result, description = null) {
         printHeader('' + result, 'black', 'bgWhite', true);
     }
 }
+
+export function assertNotEquals(expected, result, description = null) {
+    if (typeof expected === 'object') {
+        expected = JSON.stringify(expected);
+    }
+    if (typeof result === 'object') {
+        result = JSON.stringify(result);
+    }
+    if (expected !== result){
+        printHeader('PASSED' + (description ? ' - ' + description : ''), 'black', 'bgGreen', true);
+    } else {
+        printHeader('FAILED' + (description ? ' - ' + description : ''), 'black', 'bgRed', true);
+        printHeader('EXPECTED', 'black', 'bgWhite', true);
+        printHeader('' + expected, 'black', 'bgWhite', true)
+        printHeader('ACTUAL', 'black', 'bgWhite', true);
+        printHeader('' + result, 'black', 'bgWhite', true);
+    }
+}
+
+
+export function assertTrue(value, description = null) {
+    if (value){
+        printHeader('PASSED' + (description ? ' - ' + description : ''), 'black', 'bgGreen', true);
+    } else {
+        printHeader('FAILED' + (description ? ' - ' + description : ''), 'black', 'bgRed', true);
+        printHeader('EXPECTED', 'black', 'bgWhite', true);
+        printHeader('' + expected, 'black', 'bgWhite', true)
+        printHeader('ACTUAL', 'black', 'bgWhite', true);
+        printHeader('' + result, 'black', 'bgWhite', true);
+    }
+}
+
+export function assertFalse(value, description = null) {
+    assertTrue(!value, description);
+}
