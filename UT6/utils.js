@@ -24,16 +24,47 @@ export function varPermutations(vars) {
  * ===========================================================
  *                            Title
  * ===========================================================
- * @param {Im} title 
+ * @param {string} title 
  */
-export function printHeader(title) {
+export function printHeader(title, textColor = 'black', backgroundColor = 'bgBlue', slim = false) {
     const filler = "=";
-    const desiredLength = 60;
+    const desiredLength = 90;
     const sideLength = Math.floor((desiredLength - title.length) / 2);
-    const realLength = title.length + (sideLength * 2);
-    console.log('');
-    console.log(filler.repeat(realLength).black.bgBlue);
-    console.log(title.padStart(sideLength + title.length, ' ').padEnd(realLength, ' ').black.bgBlue);
-    console.log(filler.repeat(realLength).black.bgBlue);
-    console.log('');
+    if (!slim) {
+        console.log('');
+        console.log(filler.repeat(desiredLength)[textColor][backgroundColor]);
+    }
+    console.log(title.padStart(sideLength + title.length, ' ').padEnd(desiredLength, ' ')[textColor][backgroundColor]);
+    if (!slim) {
+        console.log(filler.repeat(desiredLength)[textColor][backgroundColor]);
+        console.log('');
+    }
+}
+
+export function describe(name, exec) {
+    printHeader('TEST ' + name, 'black', 'bgBrightWhite');
+    exec();
+}
+
+export function it(name, exec) {
+    printHeader(name, 'black', 'bgBrightCyan', true);
+    exec();
+}
+
+export function assertEquals(expected, result, description = null) {
+    if (typeof expected === 'object') {
+        expected = JSON.stringify(expected);
+    }
+    if (typeof result === 'object') {
+        result = JSON.stringify(result);
+    }
+    if (expected === result){
+        printHeader('PASSED' + (description ? ' - ' + description : ''), 'black', 'bgGreen', true);
+    } else {
+        printHeader('FAILED' + (description ? ' - ' + description : ''), 'black', 'bgRed', true);
+        printHeader('EXPECTED', 'black', 'bgWhite', true);
+        printHeader('' + expected, 'black', 'bgWhite', true)
+        printHeader('ACTUAL', 'black', 'bgWhite', true);
+        printHeader('' + result, 'black', 'bgWhite', true);
+    }
 }
