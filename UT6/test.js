@@ -5,37 +5,8 @@ import { assessPopulation, initialPopulation, selection, evolutionStrategy } fro
 import { Bicondicional, Conjuncion, Negacion, Variable } from './prop.js';
 import { printHeader, describe, it, assertEquals, assertNotEquals, assertTrue, assertFalse } from './utils.js';
 
-var rng3 = prng_alea("test3");
-var rng4 = prng_alea("test4");
 
-var vars2 = ['a', 'b'];
-var vars3 = ['a', 'b', 'c'];
-var vars4 = ['a', 'b', 'c', 'd'];
-
-var maxHeight = 4;
-var minHeight = 3;
-var rng = prng_alea("test2");
-let arbol = randomProp(rng, vars2, maxHeight, minHeight);
-let nodos = arbol.flatten();
-let altura = 0;
-let tablaVerdad = truthTable(arbol, vars2);
-describe('randomProp() generado con 2 vars, minHeight 3, maxHeight 4 ', function () {
-  for (let nodo of nodos) { if (nodo[1] > altura) altura = nodo[1] };
-  it('la altura del arbol generado debe ser 3 ', function () {
-    assertEquals(altura, 3);
-  });
-});
-describe('evalProp(): ((b ↔ a) ∨ ¬a) ∨ ((b ∨ a) → (b ↔ a)) CON a:false, b:false', function () {
-  it('la expresion debe retornar "true" para la expresion dada ', function () {
-    assertEquals(evalProp(arbol, { 'a': false, 'b': false }), true);
-  });
-});
-describe('truthTable() ', function () {
-  it('la tabla de verdad debe tener 8 renglones/listas', function () {
-    assertEquals(tablaVerdad.length, 4);
-  });
-});
-
+printHeader("Test: metodos de la clase Prop");
 
 describe('Prop.flatten', () => {
   it('retorna el array esperado', () => {
@@ -77,6 +48,39 @@ describe('Prop.searchAndReplace', () => {
   })
 });
 
+
+printHeader("Test: metodos de fase 0");
+
+describe('randomProp() generado con 2 vars, minHeight 3, maxHeight 4 ', function () {
+  var rng = prng_alea("test2");
+  var vars2 = ['a', 'b'];
+  let arbol = randomProp(rng, vars2, 4, 3);
+  let nodos = arbol.flatten();
+  let altura = 0;
+  for (let nodo of nodos) { if (nodo[1] > altura) altura = nodo[1] };
+  it('la altura del arbol generado debe ser 3 ', function () {
+    assertEquals(altura, 3);
+  });
+});
+
+describe('evalProp(): ((b ↔ a) ∨ ¬a) ∨ ((b ∨ a) → (b ↔ a))', function () {
+  var rng = prng_alea("test2");
+  var vars2 = ['a', 'b'];
+  let arbol = randomProp(rng, vars2, 4, 3);
+  it('la expresion debe retornar "true" CON a:false, b:false ', function () {
+    assertEquals(evalProp(arbol, { 'a': false, 'b': false }), true);
+  });
+  it('la expresion debe retornar "true" CON a:false, b:true ', function () {
+    assertEquals(evalProp(arbol, { 'a': false, 'b': true }), true);
+  });
+  it('la expresion debe retornar "true" CON a:true, b:true ', function () {
+    assertEquals(evalProp(arbol, { 'a': true, 'b': true }), true);
+  });
+  it('la expresion debe retornar "false" CON a:true, b:false ', function () {
+    assertEquals(evalProp(arbol, { 'a': true, 'b': false }), false);
+  });
+});
+
 describe('evalProp', () => {
   let proposicion = randomProp(prng_alea("sddsf"), ['a'], 4, 2);
   let verdadero = evalProp(proposicion, { 'a': false });
@@ -85,9 +89,11 @@ describe('evalProp', () => {
   });
 });
 
+
+
 describe('truthTable', () => {
   let proposicion = randomProp(prng_alea("sddsf"), ['a'], 4, 2);
-  tablaVerdad = truthTable(proposicion, ['a']);
+  let tablaVerdad = truthTable(proposicion, ['a']);
   it('La tabla de la verdad contiene todas las permutaciones de 1 variable', () => {
     let expected = [
       { a: false },
@@ -99,14 +105,17 @@ describe('truthTable', () => {
   });
 });
 
-describe('fitness', () => {
-  let proposicion = randomProp(prng_alea("sddsf"), ['a'], 4, 2);
-  tablaVerdad = truthTable(proposicion, ['a']);
-  let fitnessRandom = fitness(proposicion, tablaVerdad);
-  it('La tabla de verdad se adecúa a la proposición completamente', () => {
-    assertEquals(1, fitnessRandom)
-  })
+describe('truthTable() ', function () {
+  var rng = prng_alea("test2");
+  var vars2 = ['a', 'b'];
+  let arbol = randomProp(rng, vars2, 4, 3);
+  let tablaVerdad = truthTable(arbol, vars2);
+  it('la tabla de verdad debe tener 4 renglones/listas', function () {
+    assertEquals(tablaVerdad.length, 4);
+  });
 });
+
+printHeader("Test: metodos de fase 1");
 
 describe('randomTruthTable - 1 variable', () => {
   let tablaVerdadRandom = randomTruthTable(prng_alea("sddsf"), ['a']);
@@ -136,6 +145,25 @@ describe('randomTruthTable - 2 variables', () => {
   });
 });
 
+
+describe('fitness', () => {
+  let proposicion = randomProp(prng_alea("sddsf"), ['a'], 4, 2);
+  let tablaVerdad = truthTable(proposicion, ['a']);
+  let fitnessRandom = fitness(proposicion, tablaVerdad);
+  it('La tabla de verdad se adecúa a la proposición completamente', () => {
+    assertEquals(1, fitnessRandom)
+  })
+});
+
+// to do : test randomSearch() de fase1
+
+
+printHeader("Test: metodos de fase 2");
+
+// to do : initialPopulation() de fase2
+// to do : assessPopulation() de fase2
+
+
 describe('selection - 2 variables - Count mayor que población', () => {
   let proposicion = new Conjuncion(new Bicondicional(new Variable('b'), new Variable('a')), new Variable('b'));
   let tablaVerdad = truthTable(proposicion, ['a', 'b']);
@@ -159,3 +187,8 @@ describe('selection - 2 variables - 1 Prop devuelta', () => {
     assertEquals(expected, sel.toString());
   });
 });
+
+
+// to do : mutation() de fase2 
+
+//to do : evolutionStrategy() de fase2
