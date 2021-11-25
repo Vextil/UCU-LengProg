@@ -41,9 +41,9 @@ export function selection(rng, population, count) {
     if (count > population.length) {
         throw "Count no puede ser más grande que la población.";
     }
+    let totalFitness = population.reduce((a, [p, f]) => a + f, 0);
     let result = [];
     for (let i = 0; i < count; i++) {
-        let totalFitness = population.reduce((a, [p, f]) => a + f, 0);
         let randomFitness = Math.trunc(rng() * totalFitness);
         let accumulatedFitness = 0;
         for (let [index, [p, f]] of population.entries()) {
@@ -51,6 +51,7 @@ export function selection(rng, population, count) {
             if (accumulatedFitness >= randomFitness) {
                 result.push(p);
                 population.splice(index, 1);
+                totalFitness -= f;
                 break;
             }
         }

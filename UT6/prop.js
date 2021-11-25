@@ -23,6 +23,10 @@ export class Prop {
             let rightChildren = this.right.flatten(height + 1);
             result = result.concat(rightChildren);
         }
+        if (this.prop) {
+            let child = this.prop.flatten(height + 1);
+            result = result.concat(child);
+        }
         return result;
     }
 
