@@ -144,7 +144,7 @@ describe('selection - 2 variables - Count mayor que población', () => {
   let sel = selection(prng_alea("sddsf"), population, 2);
   let expected = "Error: Count no puede ser más grande que la población.";
   it('No puede ejecutar dado que count es más grande que la población creada.', () => {
-    assertException(sel, expected);
+    assertEquals(sel.toString(), expected);
   });
 });
 
