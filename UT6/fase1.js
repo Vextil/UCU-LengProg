@@ -37,7 +37,6 @@ export function randomSearch(rng, truthTable, count, propArgs) {
     for(let i = 0; i < count; i++) {
         let prop = randomProp(rng, propArgs.vars, propArgs.maxHeight, propArgs.minHeight);
         let propFitness = fitness(prop, truthTable);
-        console.log(prop, propFitness);
         if (propFitness === 1) {
             return prop;
         }
