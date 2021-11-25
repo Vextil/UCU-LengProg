@@ -39,7 +39,7 @@ export function assessPopulation(population, truthTable) {
  */
 export function selection(rng, population, count) {
     if (count > population.length) {
-        throw "Count no puede ser más grande que la población.";
+        return Error('Count no puede ser más grande que la población.');
     }
     let totalFitness = population.reduce((a, [p, f]) => a + f, 0);
     let result = [];
@@ -57,7 +57,7 @@ export function selection(rng, population, count) {
         }
     }
     if (result.length < count) {
-        throw 'Esto no debería pasar, el método selection quedó roto... tenemos que aprender a programar.';
+        return Error('Esto no debería pasar, el método selection quedó roto... tenemos que aprender a programar.');
     }
     return result;
 }
