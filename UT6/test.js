@@ -105,13 +105,32 @@ describe('truthTable', () => {
   });
 });
 
-describe('truthTable() ', function () {
+describe('truthTable: ((b ↔ a) ∨ ¬a) ∨ ((b ∨ a) → (b ↔ a)) ', function () {
   var rng = prng_alea("test2");
   var vars2 = ['a', 'b'];
   let arbol = randomProp(rng, vars2, 4, 3);
   let tablaVerdad = truthTable(arbol, vars2);
-  it('la tabla de verdad debe tener 4 renglones/listas', function () {
-    assertEquals(tablaVerdad.length, 4);
+  it('la tabla de verdad contiene todas las permutaciones de 2 variables', function () {
+    let expected = [
+      { a: false, b: false },
+      { a: false, b: true },
+      { a: true , b: false },
+      { a: true, b: true },
+    ];
+    expected.forEach((value, index) => {
+      assertEquals(value, tablaVerdad[index][0], 'fila ' + index);
+    });
+  });
+  it('la tabla de verdad contiene los resultados correctos', function () {
+    let expected = [
+      { a: false, b: false },
+      { a: false, b: true },
+      { a: true , b: false },
+      { a: true, b: true },
+    ];
+    expected.forEach((value, index) => {
+      assertEquals(evalProp(arbol, value), tablaVerdad[index][1], 'fila ' + index);
+    });
   });
 });
 
@@ -156,7 +175,6 @@ describe('fitness', () => {
 });
 
 // to do : test randomSearch() de fase1
-
 
 printHeader("Test: metodos de fase 2");
 
