@@ -164,7 +164,6 @@ describe('randomTruthTable - 2 variables', () => {
   });
 });
 
-
 describe('fitness', () => {
   let proposicion = randomProp(prng_alea("sddsf"), ['a'], 4, 2);
   let tablaVerdad = truthTable(proposicion, ['a']);
@@ -175,6 +174,32 @@ describe('fitness', () => {
 });
 
 // to do : test randomSearch() de fase1
+
+describe('randomSearch()', () => {
+  var rng = prng_alea("sddsf");
+  var vars = ['a', 'b', 'c'];
+  let randomTable = randomTruthTable(rng, vars);
+  var maxHeight = 4;
+  var minHeight = 3;
+  let bestRandomProp_1 = randomSearch(rng, randomTable, 1, {vars, maxHeight, minHeight});
+  let fitness_1 = fitness(bestRandomProp_1, randomTable);
+  let bestRandomProp_2 = randomSearch(rng, randomTable, 2, {vars, maxHeight, minHeight});
+  let fitness_2 = fitness(bestRandomProp_2, randomTable);
+  let bestRandomProp_3 = randomSearch(rng, randomTable, 3, {vars, maxHeight, minHeight});
+  let fitness_3 = fitness(bestRandomProp_3, randomTable);
+  // it('El fitness obtenido para bestRandomProp con tope 3 intentos debe ser el maximo de los tres\n fitness de las tres randomProps generadas en esos intentos', () => {
+  //   let fitness = [fitness_1,fitness_2,fitness_3];
+  //   console.log(fitness);
+  //   console.log(fitness_3);
+  //   console.log(fitness_3 in fitness);
+  //   assertTrue(fitness_3 in fitness);
+  // });
+  it('El fitness obtenido para bestRandomProp con tope 3 intentos debe ser >= que los tres fitness de las tres randomProps generadas en esos intentos', () => {
+    assertTrue(fitness_3 >= fitness_1, "fitness_3 es >= a fitness_1");
+    assertTrue(fitness_3 >= fitness_2, "fitness_3 es >= a fitness_2");
+    assertTrue(fitness_3 >= fitness_3, "fitness_3 es >= a fitness_3");
+  });
+});
 
 printHeader("Test: metodos de fase 2");
 
