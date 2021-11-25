@@ -173,8 +173,6 @@ describe('fitness', () => {
   })
 });
 
-// to do : test randomSearch() de fase1
-
 describe('randomSearch()', () => {
   var rng = prng_alea("sddsf");
   var vars = ['a', 'b', 'c'];
