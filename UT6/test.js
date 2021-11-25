@@ -116,7 +116,7 @@ describe('randomTruthTable', () => {
       { a: true }
     ];
     expected.forEach((value, index) => {
-      assertEquals(value, tablaVerdad[index][0], 'fila ' + index);
+      assertEquals(value, tablaVerdadRandom[index][0], 'fila ' + index);
     });
   });
 });
