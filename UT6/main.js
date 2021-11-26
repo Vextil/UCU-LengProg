@@ -63,11 +63,11 @@ function runAll(varValues, maxHeight, minHeight) {
     console.log(assessedPopulation);
 
     printHeader("selection");
-    let selectedPopulation = selection(rng, assessedPopulation, 10);
+    let selectedPopulation = selection(rng, assessedPopulation, 5);
     console.log(selectedPopulation);
 
     printHeader("evolutionStrategy");
-    let evolution = evolutionStrategy(rng, randomTable, 40, 15, { vars, maxHeight, minHeight });
+    let evolution = evolutionStrategy(rng, randomTable, 100, 15, { vars, maxHeight, minHeight });
     console.log(evolution);
 
 }
