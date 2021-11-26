@@ -208,13 +208,9 @@ describe('initialPopulation', () => {
   let vars = ['a', 'b', 'c'];
   let population = initialPopulation(rng, vars, 5);
   for (let prop of population) {
-    console.log(prop.toString());
-    let maximo = 0;
-    let altura = prop.flatten().flatMap((a, b) => b > maximo ? maximo = b : maximo);
-    it('las alturas de la initial population debe ser <= a la altura maxima (4)', () => {
-      console.log(vars.length +1);
-      console.log(maximo);
-      assertTrue(maximo <= vars.length +1);
+    let alturaMaxima = Math.max(...prop.flatten().map((p) => p[1]));
+    it('las alturas de la initial population debe ser <= a la altura maxima (3)', () => {
+      assertTrue(alturaMaxima <= vars.length);
     });
     };
 });
