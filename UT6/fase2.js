@@ -74,8 +74,8 @@ export function selection(rng, population, count) {
     let nodes = prop.flatten();
     let randomIndex = Math.round(rng() * (nodes.length - 1));
     let [search, height] = nodes[randomIndex];
-    let maxHeight = propArgs.maxHeight - height;
-    let minHeight = Math.min(0, propArgs.minHeight - height);
+    let maxHeight = Math.max(1, propArgs.maxHeight - height);
+    let minHeight = Math.max(1, propArgs.minHeight - height);
     let replace = randomProp(rng, propArgs.vars, maxHeight, minHeight);
     return prop.searchAndReplace(search, replace);
 }
@@ -99,7 +99,7 @@ export function evolutionStrategy(rng, truthTable, steps, count, propArgs) {
     while (bestFitness < 1 && step < steps) {
         step++;
         let selected = selection(rng, populationAssessed, count);
-        population = selected.map(s => mutation3(rng, s, propArgs));
+        population = selected.map(s => mutation(rng, s, propArgs));
         populationAssessed = assessPopulation(population, truthTable);
         best = populationAssessed.reduce((a, b) => a && a[1] > b[1] ? a : b);
         bestFitness = best[1];

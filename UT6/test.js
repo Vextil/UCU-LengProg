@@ -1,8 +1,8 @@
 import { prng_alea } from 'esm-seedrandom';
 import { randomProp, evalProp, truthTable } from './fase0.js';
 import { randomTruthTable, fitness, randomSearch } from './fase1.js';
-import { assessPopulation, initialPopulation, selection, evolutionStrategy } from './fase2.js';
-import { Bicondicional, Conjuncion, Negacion, Variable } from './prop.js';
+import { assessPopulation, initialPopulation, selection, evolutionStrategy, mutation } from './fase2.js';
+import { Bicondicional, Conjuncion, Negacion, PropArgs, Variable } from './prop.js';
 import { printHeader, describe, it, assertEquals, assertNotEquals, assertTrue, assertFalse } from './utils.js';
 
 
@@ -233,7 +233,40 @@ describe('selection - 2 variables - 1 Prop devuelta', () => {
   });
 });
 
+describe('mutation', () => {
+  it('for a single node tree, returns a different tree', () => {
+    const rng = prng_alea("mutation_test");
+    const prop = new Variable('a');
+    const mutated = mutation(rng, prop, new PropArgs(['a'], 1, 1));
+    assertTrue(prop !== mutated);
+  });
+  it('for a two node tree, it mutates the first node', () => {
+    const prop = new Negacion(new Variable('a'));
+    const mutated = mutation(() => 0, prop, new PropArgs(['a'], 2, 1));
+    assertTrue(prop !== mutated);
+  });
+  it('for a two node tree, it mutates the second node', () => {
+    const prop = new Negacion(new Variable('a'));
+    const flatProp = prop.flatten();
+    const mutated = mutation(() => 1, prop, new PropArgs(['b'], 1, 1));
+    const flatMutated = mutated.flatten();
+    assertTrue(flatProp[1] !== flatMutated[1]);
+  });
+  it('for a larger tree, returns a tree that was modified somewhere', () => {
+    const rng = prng_alea("mutation_test");
+    const prop = new Conjuncion(new Variable('a'), new Negacion(new Bicondicional(new Negacion(new Variable('b')), new Variable('c'))));
+    const flatProp = prop.flatten();
+    const mutated = mutation(rng, prop, new PropArgs(['a', 'b', 'c'], 4, 1));
+    const flatMutated = mutated.flatten();
+    const newNodes = flatMutated.filter(p => !flatProp.includes(p));
+    assertTrue(newNodes.length > 0);
+  });
+  it('modifies the same tree instance', () => {
+    const prop = new Negacion(new Variable('a'));
+    const mutated = mutation(() => 1, prop, new PropArgs(['b'], 1, 1));
+    assertTrue(prop === mutated);
+  });
+});
 
-// to do : mutation() de fase2 
 
 //to do : evolutionStrategy() de fase2
