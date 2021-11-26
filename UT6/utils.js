@@ -50,12 +50,12 @@ export function printHeader(title, textColor = 'black', backgroundColor = 'bgBlu
 }
 
 export function describe(name, exec) {
-    printHeader('TEST ' + name, 'black', 'bgBrightWhite');
+    printHeader('TEST ' + name, 'black', 'bgMagenta');
     exec();
 }
 
 export function it(name, exec) {
-    printHeader(name, 'black', 'bgBrightCyan', true);
+    printHeader(name, 'white', 'bgBlack', true);
     exec();
 }
 
@@ -67,9 +67,9 @@ export function assertEquals(expected, result, description = null) {
         result = JSON.stringify(result);
     }
     if (expected === result){
-        printHeader('PASSED' + (description ? ' - ' + description : ''), 'black', 'bgGreen', true);
+        printHeader('PASSED ✅' + (description ? ' - ' + description : ''), 'green', 'bgBlack', true);
     } else {
-        printHeader('FAILED' + (description ? ' - ' + description : ''), 'black', 'bgRed', true);
+        printHeader('FAILED ❌' + (description ? ' - ' + description : ''), 'red', 'bgBlack', true);
         printHeader('EXPECTED', 'black', 'bgWhite', true);
         printHeader('' + expected, 'black', 'bgWhite', true)
         printHeader('ACTUAL', 'black', 'bgWhite', true);
@@ -85,9 +85,9 @@ export function assertNotEquals(expected, result, description = null) {
         result = JSON.stringify(result);
     }
     if (expected !== result){
-        printHeader('PASSED' + (description ? ' - ' + description : ''), 'black', 'bgGreen', true);
+        printHeader('PASSED ✅' + (description ? ' - ' + description : ''), 'green', 'bgBlack', true);
     } else {
-        printHeader('FAILED' + (description ? ' - ' + description : ''), 'black', 'bgRed', true);
+        printHeader('FAILED ❌' + (description ? ' - ' + description : ''), 'red', 'bgBlack', true);
         printHeader('EXPECTED', 'black', 'bgWhite', true);
         printHeader('' + expected, 'black', 'bgWhite', true)
         printHeader('ACTUAL', 'black', 'bgWhite', true);
@@ -98,9 +98,9 @@ export function assertNotEquals(expected, result, description = null) {
 
 export function assertTrue(value, description = null) {
     if (value){
-        printHeader('PASSED' + (description ? ' - ' + description : ''), 'black', 'bgGreen', true);
+        printHeader('PASSED ✅' + (description ? ' - ' + description : ''), 'green', 'bgBlack', true);
     } else {
-        printHeader('FAILED' + (description ? ' - ' + description : ''), 'black', 'bgRed', true);
+        printHeader('FAILED ❌' + (description ? ' - ' + description : ''), 'red', 'bgBlack', true);
         printHeader('EXPECTED', 'black', 'bgWhite', true);
         printHeader('' + 'true', 'black', 'bgWhite', true)
         printHeader('ACTUAL', 'black', 'bgWhite', true);

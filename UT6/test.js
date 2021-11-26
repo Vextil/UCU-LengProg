@@ -6,7 +6,7 @@ import { Bicondicional, Conjuncion, Negacion, PropArgs, Variable } from './prop.
 import { printHeader, describe, it, assertEquals, assertNotEquals, assertTrue, assertFalse } from './utils.js';
 
 
-printHeader("Test: metodos de la clase Prop");
+printHeader("Test: metodos de la clase Prop", "black", "bgWhite");
 
 describe('Prop.flatten', () => {
   it('retorna el array esperado', () => {
@@ -49,7 +49,7 @@ describe('Prop.searchAndReplace', () => {
 });
 
 
-printHeader("Test: metodos de fase 0");
+printHeader("Test: metodos de fase 0", "black", "bgWhite");
 
 describe('randomProp() generado con 2 vars, minHeight 3, maxHeight 4 ', function () {
   var rng = prng_alea("test2");
@@ -134,7 +134,7 @@ describe('truthTable: ((b ↔ a) ∨ ¬a) ∨ ((b ∨ a) → (b ↔ a)) ', funct
   });
 });
 
-printHeader("Test: metodos de fase 1");
+printHeader("Test: metodos de fase 1", "black", "bgWhite");
 
 describe('randomTruthTable - 1 variable', () => {
   let tablaVerdadRandom = randomTruthTable(prng_alea("sddsf"), ['a']);
@@ -192,7 +192,7 @@ describe('randomSearch()', () => {
   });
 });
 
-printHeader("Test: metodos de fase 2");
+printHeader("Test: metodos de fase 2", "black", "bgWhite");
 
 describe('initialPopulation', () => {
   var rng = prng_alea("sddsf");
@@ -353,6 +353,3 @@ describe('mutation', () => {
     assertTrue(prop === mutated);
   });
 });
-
-
-//to do : evolutionStrategy() de fase2
