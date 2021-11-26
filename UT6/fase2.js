@@ -84,7 +84,7 @@ export function selection(rng, population, count) {
  * Ejecuta la evolución por mutación, retornando el mejor individuo.
  * @param {prng_alea} rng Generador de números aleatorios a usar.
  * @param {array} truthTable Tabla de verdad de referencia.
- * @param {number} steps Cantidad máxima de pasos a ejecutar
+ * @param {number} steps Cantidad máxima de pasos a ejecutar.
  * @param {number} count Cantidad de individuos de la población.
  * @param {PropArgs} propArgs Conjunto de argumentos a usar en la generación aleatoria de expresiones: vars, maxHeight y minHeight.
  * @returns {array}

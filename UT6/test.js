@@ -185,13 +185,6 @@ describe('randomSearch()', () => {
   let fitness_2 = fitness(bestRandomProp_2, randomTable);
   let bestRandomProp_3 = randomSearch(rng, randomTable, 3, {vars, maxHeight, minHeight});
   let fitness_3 = fitness(bestRandomProp_3, randomTable);
-  // it('El fitness obtenido para bestRandomProp con tope 3 intentos debe ser el maximo de los tres\n fitness de las tres randomProps generadas en esos intentos', () => {
-  //   let fitness = [fitness_1,fitness_2,fitness_3];
-  //   console.log(fitness);
-  //   console.log(fitness_3);
-  //   console.log(fitness_3 in fitness);
-  //   assertTrue(fitness_3 in fitness);
-  // });
   it('El fitness obtenido para bestRandomProp con tope 3 intentos debe ser >= que los tres fitness de las tres randomProps generadas en esos intentos', () => {
     assertTrue(fitness_3 >= fitness_1, "fitness_3 es >= a fitness_1");
     assertTrue(fitness_3 >= fitness_2, "fitness_3 es >= a fitness_2");
