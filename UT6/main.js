@@ -14,11 +14,11 @@ const rl = createInterface({
 
 rl.question("Digite cuántas variables desea utilizar [1,2,3]: ", function (name) {
     if (name === '1') {
-        runAll(['a'], {'a' : true}, 4, 3);
+        runAll({ 'a': true }, 4, 3);
     } else if (name === '2') {
-        runAll(['a', 'b'], {'a': true, 'b': false}, 4, 3);
+        runAll({ 'a': true, 'b': false }, 4, 3);
     } else if (name === '3') {
-        runAll(['a', 'b', 'c'], { 'a': true, 'b': false, 'c': true }, 4, 3);
+        runAll({ 'a': true, 'b': false, 'c': true }, 4, 3);
     } else {
         console.log("La cantidad no es válida.")
     }
@@ -29,8 +29,10 @@ rl.on("close", function () {
     process.exit(0);
 });
 
-function runAll(vars, varValues, maxHeight, minHeight) {
-    printHeader("Variables")
+function runAll(varValues, maxHeight, minHeight) {
+    var vars = Object.keys(varValues);
+
+    printHeader("variables")
     console.log(varValues);
 
     printHeader("randomProp")
