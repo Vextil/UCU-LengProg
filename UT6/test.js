@@ -201,8 +201,6 @@ describe('randomSearch()', () => {
 
 printHeader("Test: metodos de fase 2");
 
-// to do : initialPopulation() de fase2
-
 describe('initialPopulation', () => {
   var rng = prng_alea("sddsf");
   let vars = ['a', 'b', 'c'];
