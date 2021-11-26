@@ -36,7 +36,7 @@ export function printHeader(title, textColor = 'black', backgroundColor = 'bgBlu
     }
     if (title.length > 90) {
         // Partimos el string en segmentos de 90 caracteres
-        const titles = title.match(/.{1,90}/g);
+        const titles = title.match(/.{1,90}(\s|$)/g);
         for(let t of titles) {
             printHeader(t, textColor, backgroundColor, true);
         }
