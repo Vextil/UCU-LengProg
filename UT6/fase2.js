@@ -70,44 +70,15 @@ export function selection(rng, population, count) {
  * @param {PropArgs} propArgs Conjunto de argumentos a usar en la generación aleatoria de expresiones
  * @returns {array}
  */
-export function mutation(rng, prop, propArgs) {
-    /**
-     * 
-     */
-    let minH = propArgs.minHeight;
-    let result = prop;
-
-    let thisNodo = prop;
-    let i = 0
-    //busco un nodo
-    while (i < minH) {
-        if (typeof (thisNodo) !== Negacion && typeof (thisNodo) !== Variable) {
-            num = rng();
-            if (num <= 0.5) {
-                thisNodo = thisNodo.left;
-            } else {
-                thisNodo = thisNodo.right;
-            }
-        }
-        i++;
-    }
-    //hallo la altura del nodo a mutar
-    let altura = alturaNodo(thisNodo);
-    let propRnm = randomProp(rng, propArgs.vars, altura, altura);
-
-
-
-
+ export function mutation(rng, prop, propArgs) {
+    let nodes = prop.flatten();
+    let randomIndex = Math.round(rng() * (nodes.length - 1));
+    let [search, height] = nodes[randomIndex];
+    let maxHeight = propArgs.maxHeight - height;
+    let minHeight = Math.min(0, propArgs.minHeight - height);
+    let replace = randomProp(rng, propArgs.vars, maxHeight, minHeight);
+    return prop.searchAndReplace(search, replace);
 }
-
-function alturaNodo(prop) {
-    if (typeof (prop) !== Negacion && typeof (prop) !== Variable) {
-        return 1 + (Math.max(alturaNodo(prop.left), alturaNodo(prop.right)));
-    } else {
-        return 1;
-    }
-}
-
 
 /**
  * Ejecuta la evolución por mutación, retornando el mejor individuo.
@@ -137,20 +108,3 @@ export function evolutionStrategy(rng, truthTable, steps, count, propArgs) {
     return best;
 }
 
-/**
- * Calcula una nueva expresión como modificación por una expresión dada. 
- * Se toma un nodo del árbol de expresión al azar y se lo reemplaza por un subárbol generado al azar.
- * @param {prng_alea} rng Generador de números aleatorios a usar.
- * @param {Prop} prop  Expresión Prop a mutar.
- * @param {PropArgs} propArgs Conjunto de argumentos a usar en la generación aleatoria de expresiones
- * @returns {array}
- */
-export function mutation3(rng, prop, propArgs) {
-    let nodes = prop.flatten();
-    let randomIndex = Math.round(rng() * (nodes.length - 1));
-    let [search, height] = nodes[randomIndex];
-    let maxHeight = propArgs.maxHeight - height;
-    let minHeight = Math.min(0, propArgs.minHeight - height);
-    let replace = randomProp(rng, propArgs.vars, maxHeight, minHeight);
-    return prop.searchAndReplace(search, replace);
-}

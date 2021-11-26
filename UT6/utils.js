@@ -94,9 +94,9 @@ export function assertTrue(value, description = null) {
     } else {
         printHeader('FAILED' + (description ? ' - ' + description : ''), 'black', 'bgRed', true);
         printHeader('EXPECTED', 'black', 'bgWhite', true);
-        printHeader('' + expected, 'black', 'bgWhite', true)
+        printHeader('' + 'true', 'black', 'bgWhite', true)
         printHeader('ACTUAL', 'black', 'bgWhite', true);
-        printHeader('' + result, 'black', 'bgWhite', true);
+        printHeader('' + 'false', 'black', 'bgWhite', true);
     }
 }
 
