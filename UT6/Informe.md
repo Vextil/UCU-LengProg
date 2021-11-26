@@ -12,7 +12,8 @@ El proyecto se encuentra separado en scripts de acuerdo a la fase, o a su utilid
 | main.js  | Archivo a ejecutar para visualizar programa.                                                |
 | utils.js | Métodos que sirven para un propósito compartido.                                            |
 | prop.js  | Estructura de datos a utilizar a lo largo del proyecto.                                     |
-| test.js| Conjunto de pruebas de los métodos de las distintas fases.                                  |
+| test.js  | Conjunto de pruebas de los métodos de las distintas fases.                                  |
+| promedio.js| Obtencion de promedios para estimaciones de expresiones aleatorias para 1 y 2 variables.  |
 | fase0.js | Métodos de la fase 0.                                                                       |
 | fase1.js | Métodos de la fase 1.                                                                       |
 | fase2.js | Métodos de la fase 2.                                                                       |
