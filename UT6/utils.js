@@ -34,7 +34,15 @@ export function printHeader(title, textColor = 'black', backgroundColor = 'bgBlu
         console.log('');
         console.log(filler.repeat(desiredLength)[textColor][backgroundColor]);
     }
-    console.log(title.padStart(sideLength + title.length, ' ').padEnd(desiredLength, ' ')[textColor][backgroundColor]);
+    if (title.length > 90) {
+        // Partimos el string en segmentos de 90 caracteres
+        const titles = title.match(/.{1,90}/g);
+        for(let t of titles) {
+            printHeader(t, textColor, backgroundColor, true);
+        }
+    } else {
+        console.log(title.padStart(sideLength + title.length, ' ').padEnd(desiredLength, ' ')[textColor][backgroundColor]);
+    }
     if (!slim) {
         console.log(filler.repeat(desiredLength)[textColor][backgroundColor]);
         console.log('');

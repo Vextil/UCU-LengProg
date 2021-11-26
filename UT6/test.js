@@ -114,7 +114,7 @@ describe('truthTable: ((b ↔ a) ∨ ¬a) ∨ ((b ∨ a) → (b ↔ a)) ', funct
     let expected = [
       { a: false, b: false },
       { a: false, b: true },
-      { a: true , b: false },
+      { a: true, b: false },
       { a: true, b: true },
     ];
     expected.forEach((value, index) => {
@@ -125,7 +125,7 @@ describe('truthTable: ((b ↔ a) ∨ ¬a) ∨ ((b ∨ a) → (b ↔ a)) ', funct
     let expected = [
       { a: false, b: false },
       { a: false, b: true },
-      { a: true , b: false },
+      { a: true, b: false },
       { a: true, b: true },
     ];
     expected.forEach((value, index) => {
@@ -179,11 +179,11 @@ describe('randomSearch()', () => {
   let randomTable = randomTruthTable(rng, vars);
   var maxHeight = 4;
   var minHeight = 3;
-  let bestRandomProp_1 = randomSearch(rng, randomTable, 1, {vars, maxHeight, minHeight});
+  let bestRandomProp_1 = randomSearch(rng, randomTable, 1, { vars, maxHeight, minHeight });
   let fitness_1 = fitness(bestRandomProp_1, randomTable);
-  let bestRandomProp_2 = randomSearch(rng, randomTable, 2, {vars, maxHeight, minHeight});
+  let bestRandomProp_2 = randomSearch(rng, randomTable, 2, { vars, maxHeight, minHeight });
   let fitness_2 = fitness(bestRandomProp_2, randomTable);
-  let bestRandomProp_3 = randomSearch(rng, randomTable, 3, {vars, maxHeight, minHeight});
+  let bestRandomProp_3 = randomSearch(rng, randomTable, 3, { vars, maxHeight, minHeight });
   let fitness_3 = fitness(bestRandomProp_3, randomTable);
   it('El fitness obtenido para bestRandomProp con tope 3 intentos debe ser >= que los tres fitness de las tres randomProps generadas en esos intentos', () => {
     assertTrue(fitness_3 >= fitness_1, "fitness_3 es >= a fitness_1");
@@ -203,11 +203,8 @@ describe('initialPopulation', () => {
     it('las alturas de la initial population debe ser <= a la altura maxima (3)', () => {
       assertTrue(alturaMaxima <= vars.length);
     });
-    };
+  };
 });
-
-// to do : assessPopulation() de fase2
-
 
 describe('selection - 2 variables - Count mayor que población', () => {
   let proposicion = new Conjuncion(new Bicondicional(new Variable('b'), new Variable('a')), new Variable('b'));
@@ -233,26 +230,115 @@ describe('selection - 2 variables - 1 Prop devuelta', () => {
   });
 });
 
+describe('assessPopulation', () => {
+  it('Una variable (a)', () => {
+    const rng = prng_alea("assess_test_1");
+    const population = [
+      randomProp(rng, ['a'], 3, 2),
+      randomProp(rng, ['a'], 3, 2),
+      randomProp(rng, ['a'], 3, 2),
+      randomProp(rng, ['a'], 3, 2),
+      randomProp(rng, ['a'], 3, 2),
+    ];
+    const truthTable = [
+      [{ a: false }, true],
+      [{ a: false }, false],
+      [{ a: false }, true],
+      [{ a: false }, true],
+      [{ a: true }, false],
+      [{ a: true }, true],
+      [{ a: true }, true],
+      [{ a: true }, true],
+    ];
+    const assessment = assessPopulation(population, truthTable);
+    assertEquals(assessment, [
+      [population[0], 0.5],
+      [population[1], 0.5],
+      [population[2], 0.75],
+      [population[3], 0.75],
+      [population[4], 0.75]
+    ])
+  });
+
+  it('Dos variables (a,b)', () => {
+    const rng = prng_alea("assess_test_2");
+    const population = [
+      randomProp(rng, ['a', 'b'], 3, 2),
+      randomProp(rng, ['a', 'b'], 3, 2),
+      randomProp(rng, ['a', 'b'], 3, 2),
+      randomProp(rng, ['a', 'b'], 3, 2),
+      randomProp(rng, ['a', 'b'], 3, 2),
+    ];
+    const truthTable = [
+      [{ a: false, b: false }, true],
+      [{ a: false, b: false }, false],
+      [{ a: false, b: true }, true],
+      [{ a: false, b: true }, true],
+      [{ a: true, b: false }, false],
+      [{ a: true, b: false }, true],
+      [{ a: true, b: true }, true],
+      [{ a: true, b: true }, true],
+    ];
+    const assessment = assessPopulation(population, truthTable);
+    assertEquals(assessment, [
+      [population[0], 0.5],
+      [population[1], 0.5],
+      [population[2], 0.75],
+      [population[3], 0.5],
+      [population[4], 0.75]
+    ])
+  });
+
+  it('Tres variables (a,b,c)', () => {
+    const rng = prng_alea("assess_test_3");
+    const population = [
+      randomProp(rng, ['a', 'b', 'c'], 3, 2),
+      randomProp(rng, ['a', 'b', 'c'], 3, 2),
+      randomProp(rng, ['a', 'b', 'c'], 3, 2),
+      randomProp(rng, ['a', 'b', 'c'], 3, 2),
+      randomProp(rng, ['a', 'b', 'c'], 3, 2),
+    ];
+    const truthTable = [
+      [{ a: false, b: false }, true],
+      [{ a: false, b: false, c: true }, false],
+      [{ a: false, b: true, c: false }, true],
+      [{ a: false, b: true, c: true }, true],
+      [{ a: true, b: false, c: false }, false],
+      [{ a: true, b: false, c: true }, true],
+      [{ a: true, b: true, c: false }, true],
+      [{ a: true, b: true, c: true }, true],
+    ];
+    const assessment = assessPopulation(population, truthTable);
+    assertEquals(assessment, [
+      [population[0], 0.5],
+      [population[1], 0.5],
+      [population[2], 0.25],
+      [population[3], 0.75],
+      [population[4], 0.5]
+    ])
+  });
+});
+
 describe('mutation', () => {
-  it('for a single node tree, returns a different tree', () => {
+  it('Para un árbol de un nodo, retorna un árbol distinto', () => {
     const rng = prng_alea("mutation_test");
     const prop = new Variable('a');
     const mutated = mutation(rng, prop, new PropArgs(['a'], 1, 1));
     assertTrue(prop !== mutated);
   });
-  it('for a two node tree, it mutates the first node', () => {
+  it('Para un árbol de dos nodos, muta el primero', () => {
     const prop = new Negacion(new Variable('a'));
     const mutated = mutation(() => 0, prop, new PropArgs(['a'], 2, 1));
     assertTrue(prop !== mutated);
   });
-  it('for a two node tree, it mutates the second node', () => {
+  it('Para un árbol de dos nodos, muta el segundo', () => {
     const prop = new Negacion(new Variable('a'));
     const flatProp = prop.flatten();
     const mutated = mutation(() => 1, prop, new PropArgs(['b'], 1, 1));
     const flatMutated = mutated.flatten();
     assertTrue(flatProp[1] !== flatMutated[1]);
   });
-  it('for a larger tree, returns a tree that was modified somewhere', () => {
+  it('Para un árbol más grande, retorna un arbol con alguna modificación', () => {
     const rng = prng_alea("mutation_test");
     const prop = new Conjuncion(new Variable('a'), new Negacion(new Bicondicional(new Negacion(new Variable('b')), new Variable('c'))));
     const flatProp = prop.flatten();
@@ -261,7 +347,7 @@ describe('mutation', () => {
     const newNodes = flatMutated.filter(p => !flatProp.includes(p));
     assertTrue(newNodes.length > 0);
   });
-  it('modifies the same tree instance', () => {
+  it('Modifica el mismo árbol en lugar de crear uno nuevo', () => {
     const prop = new Negacion(new Variable('a'));
     const mutated = mutation(() => 1, prop, new PropArgs(['b'], 1, 1));
     assertTrue(prop === mutated);
