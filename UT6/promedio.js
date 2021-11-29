@@ -67,7 +67,7 @@ console.log(100 / veces * total + "%", total + "/" + veces);
 
 
 printHeader("Promedio evolutionStrategy - 3 variables ")
-veces = 10000;
+veces = 100;
 total = 0;
 for (let i = 0; i < veces; i++) {
     total += pruebaEvolutionStrategy(rng, args3);

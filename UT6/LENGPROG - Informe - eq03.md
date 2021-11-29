@@ -19,13 +19,11 @@ El proyecto se encuentra separado en scripts de acuerdo a la fase, o a su utilid
 | fase2.js | Métodos de la fase 2.                                                                       |
 
 ## Notas del proyecto
-* El lenguaje elegido fue [JavaScript](https://nodejs.org/es/download/), en su última versión. 
+* El lenguaje seleccionado para realizar el trabajo fue [JavaScript](https://nodejs.org/es/download/), en su última versión. 
 * Fue necesario utilizar algunas bibliotecas, por lo que se recomienda antes de iniciar el programa, ejecutar el comando `npm install`. 
 
 ## Notas de las pruebas
 * Las pruebas mostradas en las siguientes secciones se realizaron con una y dos variables. 
-* Las pruebas se realizan de manera unitaria (por fase) y en conjunto. Ver `test.js`. 
-* En la sección Extra se encuentra la realización en conjunto de todos los métodos con tres variables. 
 * Una fase depende de la otra, por lo que al momento de realizar estas pruebas se utilizan las variables definidas con anterioridad para otra fase.
 ---
 
@@ -55,8 +53,12 @@ printHeader("truthTable");
 console.log(truthTable(propAleatoria, vars));
 ```
 
+<div style="page-break-after: always;"></div>
+
 ###### Resultado de ejecución con una variable
 ![Fase01var](images_report/fase0/fase0_1variable.png)
+
+<div style="page-break-after: always;"></div>
 
 ---
 ##### Dos variables
@@ -102,8 +104,12 @@ let bestRandomProp = randomSearch(rng, randomTable, 5, {vars, maxHeight, minHeig
 console.log("Best prop: ", bestRandomProp, fitness(bestRandomProp, randomTable));
 ```
 
+<div style="page-break-after: always;"></div>
+
 ###### Resultado de ejecución con una variable
 ![Fase11var](images_report/fase1/fase1_1variable.png)
+
+<div style="page-break-after: always;"></div>
 
 ##### Dos variables
 ```js
@@ -120,6 +126,7 @@ printHeader("randomSearch");
 let bestRandomProp = randomSearch(rng, randomTable, 5, {vars, maxHeight, minHeight});
 console.log("Best prop: ", bestRandomProp, fitness(bestRandomProp, randomTable));
 ```
+<div style="page-break-after: always;"></div>
 
 ###### Resultado de ejecución con dos variables
 ![Fase12var](images_report/fase1/fase1_2variables.png)
@@ -127,4 +134,61 @@ console.log("Best prop: ", bestRandomProp, fitness(bestRandomProp, randomTable))
 <div style="page-break-after: always;"></div>
 
 ## Fase 2
+En el caso de esta última fase, se trabaja como se venía realizando hasta el momento en las otras fases, pero se introduce el concepto de población. La población es el conjunto de expresiones generadas aleatoriamente con sus respectivas aptitudes. A partir de la población obtenida, se seleccionara una expresión de la misma y mutará por otra mediante el método de estrategia evolutiva.
 
+##### Una variable
+```js
+var vars = ['a'];
+var maxHeight = 4;
+var minHeight = 3;
+
+printHeader("assessPopulation");
+let assessedPopulation = assessPopulation(population, randomTable);
+console.log(assessedPopulation);
+
+printHeader("selection");
+let selectedPopulation = selection(rng, assessedPopulation, 5);
+console.log(selectedPopulation);
+
+printHeader("evolutionStrategy");
+let evolution = evolutionStrategy(rng, randomTable, 100, 15, { vars, maxHeight, minHeight });
+console.log(evolution);
+```
+
+<div style="page-break-after: always;"></div>
+
+###### Resultado de ejecución con una variable
+![Fase21var](images_report/fase2/fase2_1variable.png)
+
+<div style="page-break-after: always;"></div>
+
+##### Dos variables
+```js
+var vars = ['a', 'b'];
+var maxHeight = 4;
+var minHeight = 3;
+
+printHeader("assessPopulation");
+let assessedPopulation = assessPopulation(population, randomTable);
+console.log(assessedPopulation);
+
+printHeader("selection");
+let selectedPopulation = selection(rng, assessedPopulation, 5);
+console.log(selectedPopulation);
+
+printHeader("evolutionStrategy");
+let evolution = evolutionStrategy(rng, randomTable, 100, 15, { vars, maxHeight, minHeight });
+console.log(evolution);
+```
+
+<div style="page-break-after: always;"></div>
+
+###### Resultado de ejecución con dos variables
+![Fase22var](images_report/fase2/fase2_2variable.png)
+
+<div style="page-break-after: always;"></div>
+
+## CONCLUSIONES
+Se llegó a la conclusión de que fue un proyecto interesante de realizar, donde se buscó abarcar diferentes temas que se fueron trabajando a lo largo del curso, en las distintas unidades temáticas. La visualización de expresiones en forma de árbol, las evaluaciones de las expresiones y la similitud con tablas de la verdad fueron de ayuda para entender de mejor manera el problema y poder llegar a buen puerto.
+
+Por otro lado, el proyecto nos brindó la capacidad de generar código que mejora sus propios resultados a partir de contextos aleatorios. Más allá de este proyecto, podemos apreciar la importancia de la programación automática y es evidente la utilidad que tiene la misma, ya que si quisiéramos resolver algún desafío de esta índole manualmente, sería algo muy complejo.
