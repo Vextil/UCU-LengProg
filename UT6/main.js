@@ -4,6 +4,7 @@ import { randomTruthTable, fitness, randomSearch } from './fase1.js';
 import { assessPopulation, initialPopulation, selection, evolutionStrategy } from './fase2.js';
 import { printHeader } from './utils.js';
 import { createInterface } from 'readline';
+import {Conjuncion, Negacion, Variable} from "./prop.js";
 
 let rng = prng_alea("sddsf");
 

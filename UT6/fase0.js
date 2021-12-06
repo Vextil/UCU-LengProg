@@ -5,7 +5,8 @@ import {
     Conjuncion,
     Disjuncion,
     Condicional,
-    Bicondicional
+    Bicondicional,
+    XOR
 } from './prop.js'
 import { varPermutations } from './utils.js';
 
@@ -19,11 +20,11 @@ import { varPermutations } from './utils.js';
  * @returns {Prop}
  */
 export function randomProp(rng, vars, maxHeight, minHeight) {
-    let num = rng() * 6;
+    let num = rng() * 7;
     if (minHeight > 1) {
         // Generamos un número random entre 1 y 6 para ignorar la Prop Variable.
         // Esto permite que la altura del arbol siga creciendo.
-        num = rng() * 5 + 1;
+        num = rng() * 6 + 1;
     }
     if (maxHeight == 1) {
         num = 0;
@@ -40,8 +41,10 @@ export function randomProp(rng, vars, maxHeight, minHeight) {
         return new Disjuncion(randomProp(rng, vars, maxHeight - 1, minHeight - 1), randomProp(rng, vars, maxHeight - 1, minHeight - 1));
     } else if (num < 5) {
         return new Condicional(randomProp(rng, vars, maxHeight - 1, minHeight - 1), randomProp(rng, vars, maxHeight - 1, minHeight - 1));
-    } else {
+    } else if (num < 6) {
         return new Bicondicional(randomProp(rng, vars, maxHeight - 1, minHeight - 1), randomProp(rng, vars, maxHeight - 1, minHeight - 1));
+    } else {
+        return new XOR(randomProp(rng, vars, maxHeight - 1, minHeight - 1), randomProp(rng, vars, maxHeight - 1, minHeight - 1));
     }
 
 }

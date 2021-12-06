@@ -33,9 +33,62 @@ function pruebaEvolutionStrategy(rng, propArgs) {
     return 0;
 }
 
-printHeader("Promedio randomSearch - 1 variable ")
+function pruebaRandomTruthTable(rng, probTrue) {
+    let table = randomTruthTable(rng, ['a','b','c'], probTrue);
+    let result = 0;
+    for (let row of table) {
+        if (row[1]) {
+            result += 1/8;
+        }
+    }
+    return result;
+}
+
+
+printHeader("Promedio randomTruthTable - 0.5")
 let veces = 1000;
 let total = 0;
+for (let i = 0; i < veces; i++) {
+    total += pruebaRandomTruthTable(rng, 0.5);
+}
+console.log(100 / veces * total + "%", total + "/" + veces);
+
+printHeader("Promedio randomTruthTable - 1")
+veces = 1000;
+total = 0;
+for (let i = 0; i < veces; i++) {
+    total += pruebaRandomTruthTable(rng, 1);
+}
+console.log(100 / veces * total + "%", total + "/" + veces);
+
+printHeader("Promedio randomTruthTable - 0")
+veces = 1000;
+total = 0;
+for (let i = 0; i < veces; i++) {
+    total += pruebaRandomTruthTable(rng, 0);
+}
+console.log(100 / veces * total + "%", total + "/" + veces);
+
+printHeader("Promedio randomTruthTable - 0.25")
+veces = 1000;
+total = 0;
+for (let i = 0; i < veces; i++) {
+    total += pruebaRandomTruthTable(rng, 0.25);
+}
+console.log(100 / veces * total + "%", total + "/" + veces);
+
+printHeader("Promedio randomTruthTable - 0.75")
+veces = 1000;
+total = 0;
+for (let i = 0; i < veces; i++) {
+    total += pruebaRandomTruthTable(rng, 0.75);
+}
+console.log(100 / veces * total + "%", total + "/" + veces);
+
+
+printHeader("Promedio randomSearch - 1 variable ")
+veces = 1000;
+total = 0;
 for (let i = 0; i < veces; i++) {
     total += pruebaRandomSearch(rng, args1);
 }

@@ -206,3 +206,24 @@ export class Bicondicional extends Prop {
         return "(" + this.left.toString() + " ↔ " + this.right.toString() + ")";
     }
 }
+
+
+/**
+ * Clase representativa de una proposición XOR.
+ */
+ export class XOR extends Prop {
+
+    constructor(left, right) {
+        super();
+        this.left = left;
+        this.right = right;
+    }
+
+    evaluate(ctx) {
+        return this.left.evaluate(ctx) !== this.right.evaluate(ctx);
+    }
+
+    toString() {
+        return "(" + this.left.toString() + " (xor) " + this.right.toString() + ")";
+    }
+}

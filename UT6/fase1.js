@@ -6,10 +6,12 @@ import { randomProp } from "./fase0.js";
  * Calcula una tabla de verdad aleatoria para poder probar la búsqueda.
  * @param {prng_alea} rng Generador de números aleatorios.
  * @param {String[]} vars Lista de nombres de variables.
+ * @param {number} probTrue Probabilidad (entre 0 y 1) utilizada al momento de generar cada resultado.
  * @returns {array}
  */
-export function randomTruthTable(rng, vars) {
-    return varPermutations(vars).map(p => [p, !!Math.round(rng())]);
+export function randomTruthTable(rng, vars, probTrue = 0.5) {
+    probTrue -= 0.5;
+    return varPermutations(vars).map(p =>  [p, !!Math.round(rng() + probTrue)]);
 }
 
 /**
